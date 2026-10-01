@@ -381,6 +381,24 @@
       font-size: 24px;
     }
 
+    .next-btn {
+      background: #67e8f9;
+      color: #06111d;
+      border: none;
+      border-radius: 12px;
+      padding: 18px 35px;
+      font-size: 18px;
+      font-weight: 1000;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .next-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 30px rgba(103,232,249,.3);
+    }
+
     .hidden {
       display: none !important;
     }
@@ -547,7 +565,7 @@ Someone saw him at 8 PM."></textarea>
         <div class="control-bar">
 
           <button class="main-btn" id="startTimer">
-            ▶ START TIMER
+            ▶️ START TIMER
           </button>
 
           <button class="small-btn" id="revealClue">
@@ -578,10 +596,16 @@ Someone saw him at 8 PM."></textarea>
 
           <p id="winnerMessage"></p>
 
-          <div style="margin-top:25px;">
-            <button class="main-btn" id="backToMissions">
+          <div style="margin-top:25px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+
+            <button class="next-btn" id="nextMission">
+              NEXT MISSION →
+            </button>
+
+            <button class="small-btn" id="backToMissions">
               ← BACK TO MISSIONS
             </button>
+
           </div>
 
         </div>
@@ -623,12 +647,17 @@ Someone saw him at 8 PM."></textarea>
     const winnerName = document.getElementById("winnerName");
     const winnerMessage = document.getElementById("winnerMessage");
 
+    const nextMissionButton = document.getElementById("nextMission");
     const backToMissions = document.getElementById("backToMissions");
 
 
-    let missions = JSON.parse(localStorage.getItem("mquest_missions") || "[]");
+    let missions = JSON.parse(
+      localStorage.getItem("mquest_missions") || "[]"
+    );
 
-    let scores = JSON.parse(localStorage.getItem("mquest_scores") || "{}");
+    let scores = JSON.parse(
+      localStorage.getItem("mquest_scores") || "{}"
+    );
 
     let currentMission = null;
 
@@ -642,18 +671,22 @@ Someone saw him at 8 PM."></textarea>
 
 
     function saveMissions() {
+
       localStorage.setItem(
         "mquest_missions",
         JSON.stringify(missions)
       );
+
     }
 
 
     function saveScores() {
+
       localStorage.setItem(
         "mquest_scores",
         JSON.stringify(scores)
       );
+
     }
 
 
@@ -665,6 +698,7 @@ Someone saw him at 8 PM."></textarea>
           '<p style="color:#94a3b8;">No missions saved yet.</p>';
 
         return;
+
       }
 
 
@@ -673,12 +707,15 @@ Someone saw him at 8 PM."></textarea>
 
       missions.forEach(function(mission, index) {
 
-        const card = document.createElement("div");
+        const card =
+          document.createElement("div");
 
         card.className = "mission-card";
 
 
-        const info = document.createElement("div");
+        const info =
+          document.createElement("div");
+
 
         info.innerHTML = `
           <h3>${escapeHtml(mission.name)}</h3>
@@ -690,40 +727,57 @@ Someone saw him at 8 PM."></textarea>
         `;
 
 
-        const actions = document.createElement("div");
+        const actions =
+          document.createElement("div");
 
         actions.className = "actions";
 
 
-        const useButton = document.createElement("button");
+        const useButton =
+          document.createElement("button");
 
         useButton.className = "main-btn";
 
-        useButton.textContent = "USE MISSION";
-
-        useButton.addEventListener("click", function() {
-          startMission(mission);
-        });
+        useButton.textContent =
+          "USE MISSION";
 
 
-        const deleteButton = document.createElement("button");
+        useButton.addEventListener(
+          "click",
+          function() {
 
-        deleteButton.className = "small-btn danger";
+            startMission(mission);
 
-        deleteButton.textContent = "DELETE";
-
-        deleteButton.addEventListener("click", function() {
-
-          if (confirm("Delete this mission?")) {
-
-            missions.splice(index, 1);
-
-            saveMissions();
-
-            renderMissionList();
           }
+        );
 
-        });
+
+        const deleteButton =
+          document.createElement("button");
+
+        deleteButton.className =
+          "small-btn danger";
+
+        deleteButton.textContent =
+          "DELETE";
+
+
+        deleteButton.addEventListener(
+          "click",
+          function() {
+
+            if (confirm("Delete this mission?")) {
+
+              missions.splice(index, 1);
+
+              saveMissions();
+
+              renderMissionList();
+
+            }
+
+          }
+        );
 
 
         actions.appendChild(useButton);
@@ -741,116 +795,176 @@ Someone saw him at 8 PM."></textarea>
     }
 
 
-    missionForm.addEventListener("submit", function(event) {
+    missionForm.addEventListener(
+      "submit",
+      function(event) {
 
-      event.preventDefault();
-
-
-      const clues = document
-        .getElementById("clues")
-        .value
-        .split("\n")
-        .map(function(clue) {
-          return clue.trim();
-        })
-        .filter(function(clue) {
-          return clue.length > 0;
-        });
+        event.preventDefault();
 
 
-      const mission = {
+        const clues =
+          document
+            .getElementById("clues")
+            .value
+            .split("\n")
+            .map(function(clue) {
 
-        id: Date.now(),
+              return clue.trim();
 
-        number: Number(
-          document.getElementById("missionNumber").value
-        ),
+            })
+            .filter(function(clue) {
 
-        name:
-          document.getElementById("missionName").value.trim(),
+              return clue.length > 0;
 
-        reward:
-          Number(
-            document.getElementById("rewardMoney").value
-          ),
-
-        time:
-          Number(
-            document.getElementById("timeLimit").value
-          ),
-
-        teams: [
-
-          document.getElementById("team1").value.trim(),
-
-          document.getElementById("team2").value.trim(),
-
-          document.getElementById("team3").value.trim(),
-
-          document.getElementById("team4").value.trim()
-
-        ],
-
-        story:
-          document.getElementById("story").value.trim(),
-
-        instructions:
-          document.getElementById("instructions").value.trim(),
-
-        clues: clues
-
-      };
+            });
 
 
-      missions.push(mission);
+        const mission = {
 
-      saveMissions();
+          id: Date.now(),
 
-      missionForm.reset();
+          number:
+            Number(
+              document.getElementById(
+                "missionNumber"
+              ).value
+            ),
 
-      document.getElementById("timeLimit").value = 5;
+          name:
+            document.getElementById(
+              "missionName"
+            ).value.trim(),
 
-      document.getElementById("missionNumber").value =
-        missions.length + 1;
+          reward:
+            Number(
+              document.getElementById(
+                "rewardMoney"
+              ).value
+            ),
 
-      document.getElementById("team1").value = "Team 1";
-      document.getElementById("team2").value = "Team 2";
-      document.getElementById("team3").value = "Team 3";
-      document.getElementById("team4").value = "Team 4";
+          time:
+            Number(
+              document.getElementById(
+                "timeLimit"
+              ).value
+            ),
+
+          teams: [
+
+            document.getElementById(
+              "team1"
+            ).value.trim(),
+
+            document.getElementById(
+              "team2"
+            ).value.trim(),
+
+            document.getElementById(
+              "team3"
+            ).value.trim(),
+
+            document.getElementById(
+              "team4"
+            ).value.trim()
+
+          ],
+
+          story:
+            document.getElementById(
+              "story"
+            ).value.trim(),
+
+          instructions:
+            document.getElementById(
+              "instructions"
+            ).value.trim(),
+
+          clues: clues
+
+        };
 
 
-      renderMissionList();
+        missions.push(mission);
 
-      alert("Mission saved!");
+        saveMissions();
 
-    });
+
+        missionForm.reset();
+
+
+        document.getElementById(
+          "timeLimit"
+        ).value = 5;
+
+
+        document.getElementById(
+          "missionNumber"
+        ).value =
+          missions.length + 1;
+
+
+        document.getElementById(
+          "team1"
+        ).value = "Team 1";
+
+
+        document.getElementById(
+          "team2"
+        ).value = "Team 2";
+
+
+        document.getElementById(
+          "team3"
+        ).value = "Team 3";
+
+
+        document.getElementById(
+          "team4"
+        ).value = "Team 4";
+
+
+        renderMissionList();
+
+
+        alert("Mission saved!");
+
+      }
+    );
 
 
     function startMission(mission) {
 
       currentMission = mission;
 
+
       clearInterval(timerInterval);
+
 
       timerRunning = false;
 
       revealedClues = 0;
 
-      timeRemaining = mission.time * 60;
+      timeRemaining =
+        mission.time * 60;
 
 
-      teacherPanel.style.display = "none";
+      teacherPanel.style.display =
+        "none";
 
-      game.style.display = "block";
+
+      game.style.display =
+        "block";
 
 
       gameMissionNumber.textContent =
         "MISSION " +
-        String(mission.number).padStart(2, "0");
+        String(mission.number)
+          .padStart(2, "0");
 
 
       gameReward.textContent =
-        "REWARD: " + mission.reward;
+        "REWARD: " +
+        mission.reward;
 
 
       gameTitle.textContent =
@@ -865,7 +979,9 @@ Someone saw him at 8 PM."></textarea>
         mission.instructions;
 
 
-      timerElement.classList.remove("finished");
+      timerElement.classList.remove(
+        "finished"
+      );
 
 
       updateTimer();
@@ -873,11 +989,33 @@ Someone saw him at 8 PM."></textarea>
 
       cluesContainer.innerHTML = "";
 
-      winnerSection.style.display = "none";
 
-      result.style.display = "none";
+      winnerSection.style.display =
+        "none";
 
-      winnerButtons.innerHTML = "";
+
+      result.style.display =
+        "none";
+
+
+      winnerButtons.innerHTML =
+        "";
+
+
+      startTimerButton.disabled =
+        false;
+
+
+      startTimerButton.textContent =
+        "▶️ START TIMER";
+
+
+      endMissionButton.disabled =
+        false;
+
+
+      revealClueButton.disabled =
+        false;
 
 
       renderScoreboard();
@@ -888,7 +1026,10 @@ Someone saw him at 8 PM."></textarea>
     function updateTimer() {
 
       const minutes =
-        Math.floor(timeRemaining / 60);
+        Math.floor(
+          timeRemaining / 60
+        );
+
 
       const seconds =
         timeRemaining % 60;
@@ -902,141 +1043,210 @@ Someone saw him at 8 PM."></textarea>
     }
 
 
-    startTimerButton.addEventListener("click", function() {
+    startTimerButton.addEventListener(
+      "click",
+      function() {
 
-      if (timerRunning || timeRemaining <= 0) {
-        return;
-      }
+        if (
+          timerRunning ||
+          timeRemaining <= 0
+        ) {
 
-
-      timerRunning = true;
-
-      startTimerButton.disabled = true;
-
-      startTimerButton.textContent =
-        "⏱ TIMER RUNNING";
-
-
-      timerInterval = setInterval(function() {
-
-        timeRemaining--;
-
-        updateTimer();
-
-
-        if (timeRemaining <= 0) {
-
-          clearInterval(timerInterval);
-
-          timerRunning = false;
-
-          timerElement.textContent =
-            "TIME'S UP";
-
-          timerElement.classList.add("finished");
-
-          startTimerButton.disabled = true;
-
-          endMission();
+          return;
 
         }
 
-      }, 1000);
 
-    });
+        timerRunning = true;
 
 
-    revealClueButton.addEventListener("click", function() {
+        startTimerButton.disabled =
+          true;
 
-      if (!currentMission) {
-        return;
+
+        startTimerButton.textContent =
+          "⏱ TIMER RUNNING";
+
+
+        timerInterval =
+          setInterval(
+            function() {
+
+              timeRemaining--;
+
+              updateTimer();
+
+
+              if (
+                timeRemaining <= 0
+              ) {
+
+                clearInterval(
+                  timerInterval
+                );
+
+
+                timerRunning = false;
+
+
+                timerElement.textContent =
+                  "TIME'S UP";
+
+
+                timerElement.classList.add(
+                  "finished"
+                );
+
+
+                startTimerButton.disabled =
+                  true;
+
+
+                endMission();
+
+              }
+
+            },
+            1000
+          );
+
       }
+    );
 
 
-      if (
-        revealedClues >=
-        currentMission.clues.length
-      ) {
+    revealClueButton.addEventListener(
+      "click",
+      function() {
 
-        revealClueButton.textContent =
-          "NO MORE CLUES";
+        if (!currentMission) {
 
-        return;
+          return;
+
+        }
+
+
+        if (
+          revealedClues >=
+          currentMission.clues.length
+        ) {
+
+          revealClueButton.textContent =
+            "NO MORE CLUES";
+
+          return;
+
+        }
+
+
+        const clue =
+          currentMission.clues[
+            revealedClues
+          ];
+
+
+        const clueElement =
+          document.createElement(
+            "div"
+          );
+
+
+        clueElement.className =
+          "clue";
+
+
+        clueElement.textContent =
+          "CLUE " +
+          (revealedClues + 1) +
+          ": " +
+          clue;
+
+
+        cluesContainer.appendChild(
+          clueElement
+        );
+
+
+        revealedClues++;
 
       }
+    );
 
 
-      const clue =
-        currentMission.clues[revealedClues];
+    endMissionButton.addEventListener(
+      "click",
+      function() {
 
+        endMission();
 
-      const clueElement =
-        document.createElement("div");
-
-      clueElement.className = "clue";
-
-      clueElement.textContent =
-        "CLUE " +
-        (revealedClues + 1) +
-        ": " +
-        clue;
-
-
-      cluesContainer.appendChild(clueElement);
-
-
-      revealedClues++;
-
-    });
-
-
-    endMissionButton.addEventListener("click", function() {
-
-      endMission();
-
-    });
+      }
+    );
 
 
     function endMission() {
 
-      clearInterval(timerInterval);
+      clearInterval(
+        timerInterval
+      );
+
 
       timerRunning = false;
 
-      startTimerButton.disabled = true;
 
-      endMissionButton.disabled = true;
-
-      revealClueButton.disabled = true;
+      startTimerButton.disabled =
+        true;
 
 
-      winnerSection.style.display = "block";
+      endMissionButton.disabled =
+        true;
 
 
-      winnerButtons.innerHTML = "";
+      revealClueButton.disabled =
+        true;
 
 
-      currentMission.teams.forEach(function(team, index) {
-
-        const button =
-          document.createElement("button");
-
-        button.className = "winner-btn";
-
-        button.textContent =
-          "🏆 " + team + " WINS";
+      winnerSection.style.display =
+        "block";
 
 
-        button.addEventListener("click", function() {
-
-          chooseWinner(index);
-
-        });
+      winnerButtons.innerHTML =
+        "";
 
 
-        winnerButtons.appendChild(button);
+      currentMission.teams.forEach(
+        function(team, index) {
 
-      });
+          const button =
+            document.createElement(
+              "button"
+            );
+
+
+          button.className =
+            "winner-btn";
+
+
+          button.textContent =
+            "🏆 " +
+            team +
+            " WINS";
+
+
+          button.addEventListener(
+            "click",
+            function() {
+
+              chooseWinner(index);
+
+            }
+          );
+
+
+          winnerButtons.appendChild(
+            button
+          );
+
+        }
+      );
 
     }
 
@@ -1048,24 +1258,32 @@ Someone saw him at 8 PM."></textarea>
 
 
       if (!scores[team]) {
+
         scores[team] = 0;
+
       }
 
 
       scores[team] +=
-        Number(currentMission.reward);
+        Number(
+          currentMission.reward
+        );
 
 
       saveScores();
 
 
-      winnerSection.style.display = "none";
+      winnerSection.style.display =
+        "none";
 
-      result.style.display = "block";
+
+      result.style.display =
+        "block";
 
 
       winnerName.textContent =
-        team + " WINS!";
+        team +
+        " WINS!";
 
 
       winnerMessage.textContent =
@@ -1084,40 +1302,53 @@ Someone saw him at 8 PM."></textarea>
     function renderScoreboard() {
 
       if (!currentMission) {
+
         return;
+
       }
 
 
-      scoreboard.innerHTML = "";
+      scoreboard.innerHTML =
+        "";
 
 
-      currentMission.teams.forEach(function(team) {
+      currentMission.teams.forEach(
+        function(team) {
 
-        if (!scores[team]) {
-          scores[team] = 0;
+          if (!scores[team]) {
+
+            scores[team] = 0;
+
+          }
+
+
+          const card =
+            document.createElement(
+              "div"
+            );
+
+
+          card.className =
+            "team-score";
+
+
+          card.innerHTML = `
+            <div class="team-name">
+              ${escapeHtml(team)}
+            </div>
+
+            <div class="money">
+              ${scores[team]}
+            </div>
+          `;
+
+
+          scoreboard.appendChild(
+            card
+          );
+
         }
-
-
-        const card =
-          document.createElement("div");
-
-        card.className = "team-score";
-
-
-        card.innerHTML = `
-          <div class="team-name">
-            ${escapeHtml(team)}
-          </div>
-
-          <div class="money">
-            ${scores[team]}
-          </div>
-        `;
-
-
-        scoreboard.appendChild(card);
-
-      });
+      );
 
 
       saveScores();
@@ -1125,36 +1356,125 @@ Someone saw him at 8 PM."></textarea>
     }
 
 
-    backToMissions.addEventListener("click", function() {
+    nextMissionButton.addEventListener(
+      "click",
+      function() {
 
-      clearInterval(timerInterval);
+        if (!currentMission) {
 
-      currentMission = null;
+          return;
 
-      teacherPanel.style.display = "block";
+        }
 
-      game.style.display = "none";
 
-      startTimerButton.disabled = false;
+        clearInterval(
+          timerInterval
+        );
 
-      startTimerButton.textContent =
-        "▶ START TIMER";
 
-      endMissionButton.disabled = false;
+        const nextNumber =
+          Number(
+            currentMission.number
+          ) + 1;
 
-      revealClueButton.disabled = false;
 
-      renderMissionList();
+        const nextMission =
+          missions.find(
+            function(mission) {
 
-    });
+              return Number(
+                mission.number
+              ) === nextNumber;
+
+            }
+          );
+
+
+        if (nextMission) {
+
+          startMission(
+            nextMission
+          );
+
+        } else {
+
+          teacherPanel.style.display =
+            "block";
+
+
+          game.style.display =
+            "none";
+
+
+          currentMission = null;
+
+
+          alert(
+            "There is no next mission yet."
+          );
+
+
+          renderMissionList();
+
+        }
+
+      }
+    );
+
+
+    backToMissions.addEventListener(
+      "click",
+      function() {
+
+        clearInterval(
+          timerInterval
+        );
+
+
+        currentMission = null;
+
+
+        teacherPanel.style.display =
+          "block";
+
+
+        game.style.display =
+          "none";
+
+
+        startTimerButton.disabled =
+          false;
+
+
+        startTimerButton.textContent =
+          "▶️ START TIMER";
+
+
+        endMissionButton.disabled =
+          false;
+
+
+        revealClueButton.disabled =
+          false;
+
+
+        renderMissionList();
+
+      }
+    );
 
 
     function escapeHtml(text) {
 
       const div =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
-      div.textContent = text;
+
+      div.textContent =
+        text;
+
 
       return div.innerHTML;
 
