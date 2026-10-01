@@ -18,23 +18,25 @@
         radial-gradient(circle at 50% 35%, #18253f 0%, #0b1020 38%, #050711 75%);
       color: white;
       font-family: Arial, Helvetica, sans-serif;
-      overflow: hidden;
+      overflow-x: hidden;
+    }
+
+    button {
+      font-family: inherit;
     }
 
     .screen {
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       padding: 30px;
       text-align: center;
       position: relative;
     }
 
     .stars {
-      position: absolute;
+      position: fixed;
       inset: 0;
-      opacity: 0.55;
+      opacity: 0.4;
+      pointer-events: none;
       background-image:
         radial-gradient(circle, white 1px, transparent 1px),
         radial-gradient(circle, #7dd3fc 1px, transparent 1px);
@@ -42,128 +44,370 @@
       background-position: 20px 30px, 70px 80px;
     }
 
-    .content {
+    .app {
       position: relative;
       z-index: 2;
-      max-width: 1000px;
       width: 100%;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .brand {
+      padding: 25px 0;
     }
 
     .tag {
-      font-size: 15px;
-      font-weight: 800;
-      letter-spacing: 7px;
       color: #67e8f9;
-      text-transform: uppercase;
-      margin-bottom: 28px;
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 5px;
+      margin-bottom: 10px;
     }
 
     .logo {
-      font-size: clamp(70px, 14vw, 170px);
+      font-size: clamp(55px, 10vw, 120px);
       font-weight: 1000;
-      letter-spacing: 12px;
-      line-height: 0.9;
-      text-shadow:
-        0 0 20px rgba(103, 232, 249, 0.25),
-        0 0 60px rgba(103, 232, 249, 0.12);
+      letter-spacing: 10px;
     }
 
     .logo span {
       color: #67e8f9;
     }
 
-    .subtitle {
-      margin-top: 28px;
-      font-size: clamp(18px, 3vw, 30px);
-      font-weight: 700;
-      letter-spacing: 5px;
-      color: #cbd5e1;
-      text-transform: uppercase;
-    }
-
-    .description {
-      margin: 24px auto 0;
-      max-width: 650px;
+    .exclusive {
+      margin-top: 12px;
       color: #94a3b8;
-      font-size: clamp(16px, 2vw, 21px);
-      line-height: 1.7;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 3px;
     }
 
-    .start {
-      margin-top: 45px;
-      min-width: 280px;
-      padding: 20px 38px;
-      border: 2px solid #67e8f9;
-      border-radius: 14px;
+    .panel {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid #334155;
+      border-radius: 20px;
+      padding: 28px;
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .panel h2 {
+      color: #67e8f9;
+      margin-bottom: 22px;
+      letter-spacing: 2px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      color: #cbd5e1;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid #475569;
+      background: #080d1a;
+      color: white;
+      font-size: 16px;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: #67e8f9;
+    }
+
+    .teams {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .main-btn,
+    .small-btn {
+      border: none;
+      border-radius: 10px;
+      padding: 14px 20px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .main-btn {
       background: #67e8f9;
       color: #06111d;
-      font-size: 20px;
-      font-weight: 1000;
-      letter-spacing: 3px;
-      cursor: pointer;
-      box-shadow: 0 0 35px rgba(103, 232, 249, 0.18);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .start:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 0 55px rgba(103, 232, 249, 0.35);
-    }
-
-    .bottom {
-      position: absolute;
-      bottom: 25px;
-      left: 0;
-      right: 0;
-      color: #475569;
-      font-size: 12px;
-      letter-spacing: 3px;
-      font-weight: 700;
-      z-index: 2;
-    }
-
-    .mission {
-      display: none;
-      position: relative;
-      z-index: 3;
-      width: 100%;
-      max-width: 1000px;
-    }
-
-    .mission-label {
-      color: #67e8f9;
       font-size: 16px;
-      font-weight: 900;
-      letter-spacing: 6px;
     }
 
-    .mission h1 {
-      margin-top: 25px;
-      font-size: clamp(45px, 8vw, 100px);
-      font-weight: 1000;
-      letter-spacing: 3px;
+    .main-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 25px rgba(103,232,249,.25);
     }
 
-    .mission-box {
-      margin: 35px auto 0;
-      max-width: 750px;
-      padding: 35px;
+    .small-btn {
+      background: #1e293b;
+      color: white;
+      border: 1px solid #475569;
+    }
+
+    .small-btn:hover {
+      border-color: #67e8f9;
+    }
+
+    .danger {
+      border-color: #ef4444;
+      color: #fecaca;
+    }
+
+    .mission-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .mission-card {
+      background: #080d1a;
       border: 1px solid #334155;
-      border-radius: 22px;
-      background: rgba(15, 23, 42, 0.72);
+      border-radius: 12px;
+      padding: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
     }
 
-    .mission-box p {
-      font-size: clamp(20px, 3vw, 32px);
+    .mission-card h3 {
+      margin-bottom: 6px;
+    }
+
+    .mission-card p {
+      color: #94a3b8;
+      font-size: 14px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .game {
+      display: none;
+    }
+
+    .game-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .mission-number {
+      color: #67e8f9;
+      font-weight: 900;
+      letter-spacing: 4px;
+    }
+
+    .reward {
+      color: #fbbf24;
+      font-size: 24px;
+      font-weight: 1000;
+    }
+
+    .game-title {
+      font-size: clamp(40px, 7vw, 90px);
+      font-weight: 1000;
+      margin: 15px 0 25px;
+      line-height: 1;
+    }
+
+    .story-box {
+      background: rgba(15,23,42,.9);
+      border: 1px solid #334155;
+      border-radius: 18px;
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+
+    .story-box h3 {
+      color: #67e8f9;
+      margin-bottom: 12px;
+      letter-spacing: 2px;
+    }
+
+    .story-box p {
+      color: #e2e8f0;
+      font-size: clamp(18px, 2.5vw, 28px);
       line-height: 1.5;
-      font-weight: 700;
     }
 
     .timer {
-      margin-top: 30px;
-      font-size: 48px;
+      font-size: clamp(60px, 10vw, 120px);
       font-weight: 1000;
       color: #fbbf24;
+      margin: 20px 0;
+      letter-spacing: 5px;
+    }
+
+    .timer.finished {
+      color: #ef4444;
+    }
+
+    .control-bar {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 20px 0;
+    }
+
+    .clues {
+      display: grid;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .clue {
+      background: #111827;
+      border-left: 4px solid #67e8f9;
+      padding: 15px;
+      font-size: 18px;
+      text-align: left;
+      border-radius: 8px;
+    }
+
+    .scoreboard {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 25px 0;
+    }
+
+    .team-score {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      padding: 18px;
+      text-align: center;
+    }
+
+    .team-score .team-name {
+      font-weight: 900;
+      color: #cbd5e1;
+      font-size: 17px;
+    }
+
+    .team-score .money {
+      color: #fbbf24;
+      font-size: 30px;
+      font-weight: 1000;
+      margin-top: 8px;
+    }
+
+    .winner-section {
+      display: none;
+      margin-top: 25px;
+      padding: 25px;
+      border: 1px solid #fbbf24;
+      border-radius: 18px;
+      background: rgba(120, 83, 10, 0.12);
+    }
+
+    .winner-section h2 {
+      text-align: center;
+      color: #fbbf24;
+      margin-bottom: 20px;
+    }
+
+    .winner-buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .winner-btn {
+      background: #172033;
+      color: white;
+      border: 1px solid #475569;
+      border-radius: 10px;
+      padding: 16px;
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    .winner-btn:hover {
+      border-color: #fbbf24;
+      color: #fbbf24;
+    }
+
+    .result {
+      display: none;
+      text-align: center;
+      padding: 35px;
+    }
+
+    .result h1 {
+      font-size: clamp(40px, 8vw, 85px);
+      color: #fbbf24;
+      margin-bottom: 15px;
+    }
+
+    .result p {
+      color: #cbd5e1;
+      font-size: 24px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 700px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .field.full {
+        grid-column: auto;
+      }
+
+      .teams,
+      .scoreboard,
+      .winner-buttons {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .mission-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .game-header {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
@@ -171,94 +415,754 @@
 <body>
 
   <main class="screen">
-
     <div class="stars"></div>
 
-    <section class="content" id="home">
+    <div class="app">
 
-      <div class="tag">A SPEAKING ADVENTURE</div>
+      <div class="brand">
+        <div class="tag">A SPEAKING ADVENTURE</div>
 
-      <div class="logo">
-        M<span>-</span>QUEST
+        <div class="logo">
+          M<span>-</span>QUEST
+        </div>
+
+        <div class="exclusive">
+          EXCLUSIVE TO MR. MONTHER'S STUDENTS
+        </div>
       </div>
 
-      <div class="subtitle">
-        Speak. Discover. Solve.
-      </div>
+      <!-- TEACHER PANEL -->
 
-      <p class="description">
-        Enter the mission. Work together. Speak English.
-        Discover the truth before time runs out.
-      </p>
+      <section id="teacherPanel">
 
-      <button class="start" id="startButton">
-        START MISSION
-      </button>
+        <div class="panel">
+          <h2>GAME MASTER — CREATE MISSION</h2>
 
-    </section>
+          <form id="missionForm">
 
-    <section class="mission" id="mission">
+            <div class="form-grid">
 
-      <div class="mission-label">
-        MISSION 01
-      </div>
+              <div class="field">
+                <label>Mission Name</label>
+                <input id="missionName" type="text" placeholder="Example: The Missing Diamond" required>
+              </div>
 
-      <h1>THE LOST PASSPORT</h1>
+              <div class="field">
+                <label>Reward Money</label>
+                <input id="rewardMoney" type="number" min="0" placeholder="500" required>
+              </div>
 
-      <div class="mission-box">
-        <p>
-          Something has gone wrong at the airport.
-          A passenger has lost their passport.
-          Find out what happened.
-        </p>
+              <div class="field">
+                <label>Time Limit (minutes)</label>
+                <input id="timeLimit" type="number" min="1" value="5" required>
+              </div>
+
+              <div class="field">
+                <label>Mission Number</label>
+                <input id="missionNumber" type="number" min="1" value="1" required>
+              </div>
+
+              <div class="field full">
+                <label>Team Names</label>
+
+                <div class="teams">
+                  <input id="team1" value="Team 1" required>
+                  <input id="team2" value="Team 2" required>
+                  <input id="team3" value="Team 3" required>
+                  <input id="team4" value="Team 4" required>
+                </div>
+              </div>
+
+              <div class="field full">
+                <label>Mission Story / Situation</label>
+                <textarea id="story" placeholder="Tell the students what happened..." required></textarea>
+              </div>
+
+              <div class="field full">
+                <label>Instructions</label>
+                <textarea id="instructions" placeholder="What do the students have to do?" required></textarea>
+              </div>
+
+              <div class="field full">
+                <label>Clues — one clue per line</label>
+                <textarea id="clues" placeholder="The person was wearing a blue jacket.
+The passport was found near the hotel.
+Someone saw him at 8 PM."></textarea>
+              </div>
+
+            </div>
+
+            <div style="margin-top:20px;">
+              <button class="main-btn" type="submit">
+                SAVE MISSION
+              </button>
+            </div>
+
+          </form>
+        </div>
+
+        <div class="panel">
+          <h2>SAVED MISSIONS</h2>
+
+          <div id="missionList" class="mission-list">
+            <p style="color:#94a3b8;">No missions saved yet.</p>
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- GAME SCREEN -->
+
+      <section id="game" class="game">
+
+        <div class="game-header">
+          <div class="mission-number" id="gameMissionNumber">
+            MISSION 01
+          </div>
+
+          <div class="reward" id="gameReward">
+            $0
+          </div>
+        </div>
+
+        <div class="game-title" id="gameTitle">
+          MISSION
+        </div>
+
+        <div class="story-box">
+          <h3>THE SITUATION</h3>
+          <p id="gameStory"></p>
+        </div>
+
+        <div class="story-box">
+          <h3>YOUR MISSION</h3>
+          <p id="gameInstructions"></p>
+        </div>
 
         <div class="timer" id="timer">
           05:00
         </div>
-      </div>
 
-    </section>
+        <div class="control-bar">
 
-    <div class="bottom">
-      CREATED FOR ENGLISH SPEAKING
+          <button class="main-btn" id="startTimer">
+            ▶ START TIMER
+          </button>
+
+          <button class="small-btn" id="revealClue">
+            🔎 REVEAL CLUE
+          </button>
+
+          <button class="small-btn danger" id="endMission">
+            ■ END MISSION
+          </button>
+
+        </div>
+
+        <div id="cluesContainer" class="clues"></div>
+
+        <div class="scoreboard" id="scoreboard"></div>
+
+        <div class="winner-section" id="winnerSection">
+
+          <h2>GAME MASTER — CHOOSE THE WINNING TEAM</h2>
+
+          <div class="winner-buttons" id="winnerButtons"></div>
+
+        </div>
+
+        <div class="result" id="result">
+
+          <h1 id="winnerName"></h1>
+
+          <p id="winnerMessage"></p>
+
+          <div style="margin-top:25px;">
+            <button class="main-btn" id="backToMissions">
+              ← BACK TO MISSIONS
+            </button>
+          </div>
+
+        </div>
+
+      </section>
+
     </div>
-
   </main>
 
+
   <script>
-    const startButton = document.getElementById("startButton");
-    const home = document.getElementById("home");
-    const mission = document.getElementById("mission");
+
+    const missionForm = document.getElementById("missionForm");
+    const missionList = document.getElementById("missionList");
+
+    const teacherPanel = document.getElementById("teacherPanel");
+    const game = document.getElementById("game");
+
+    const gameMissionNumber = document.getElementById("gameMissionNumber");
+    const gameReward = document.getElementById("gameReward");
+    const gameTitle = document.getElementById("gameTitle");
+    const gameStory = document.getElementById("gameStory");
+    const gameInstructions = document.getElementById("gameInstructions");
+
     const timerElement = document.getElementById("timer");
 
-    let time = 300;
-    let timerStarted = false;
+    const startTimerButton = document.getElementById("startTimer");
+    const revealClueButton = document.getElementById("revealClue");
+    const endMissionButton = document.getElementById("endMission");
 
-    startButton.addEventListener("click", function () {
-      home.style.display = "none";
-      mission.style.display = "block";
+    const cluesContainer = document.getElementById("cluesContainer");
 
-      if (!timerStarted) {
-        timerStarted = true;
+    const scoreboard = document.getElementById("scoreboard");
 
-        const interval = setInterval(function () {
-          time--;
+    const winnerSection = document.getElementById("winnerSection");
+    const winnerButtons = document.getElementById("winnerButtons");
 
-          const minutes = Math.floor(time / 60);
-          const seconds = time % 60;
+    const result = document.getElementById("result");
+    const winnerName = document.getElementById("winnerName");
+    const winnerMessage = document.getElementById("winnerMessage");
+
+    const backToMissions = document.getElementById("backToMissions");
+
+
+    let missions = JSON.parse(localStorage.getItem("mquest_missions") || "[]");
+
+    let scores = JSON.parse(localStorage.getItem("mquest_scores") || "{}");
+
+    let currentMission = null;
+
+    let timeRemaining = 0;
+
+    let timerInterval = null;
+
+    let timerRunning = false;
+
+    let revealedClues = 0;
+
+
+    function saveMissions() {
+      localStorage.setItem(
+        "mquest_missions",
+        JSON.stringify(missions)
+      );
+    }
+
+
+    function saveScores() {
+      localStorage.setItem(
+        "mquest_scores",
+        JSON.stringify(scores)
+      );
+    }
+
+
+    function renderMissionList() {
+
+      if (missions.length === 0) {
+
+        missionList.innerHTML =
+          '<p style="color:#94a3b8;">No missions saved yet.</p>';
+
+        return;
+      }
+
+
+      missionList.innerHTML = "";
+
+
+      missions.forEach(function(mission, index) {
+
+        const card = document.createElement("div");
+
+        card.className = "mission-card";
+
+
+        const info = document.createElement("div");
+
+        info.innerHTML = `
+          <h3>${escapeHtml(mission.name)}</h3>
+          <p>
+            Mission ${mission.number}
+            • ${mission.time} minutes
+            • Reward: ${mission.reward}
+          </p>
+        `;
+
+
+        const actions = document.createElement("div");
+
+        actions.className = "actions";
+
+
+        const useButton = document.createElement("button");
+
+        useButton.className = "main-btn";
+
+        useButton.textContent = "USE MISSION";
+
+        useButton.addEventListener("click", function() {
+          startMission(mission);
+        });
+
+
+        const deleteButton = document.createElement("button");
+
+        deleteButton.className = "small-btn danger";
+
+        deleteButton.textContent = "DELETE";
+
+        deleteButton.addEventListener("click", function() {
+
+          if (confirm("Delete this mission?")) {
+
+            missions.splice(index, 1);
+
+            saveMissions();
+
+            renderMissionList();
+          }
+
+        });
+
+
+        actions.appendChild(useButton);
+
+        actions.appendChild(deleteButton);
+
+        card.appendChild(info);
+
+        card.appendChild(actions);
+
+        missionList.appendChild(card);
+
+      });
+
+    }
+
+
+    missionForm.addEventListener("submit", function(event) {
+
+      event.preventDefault();
+
+
+      const clues = document
+        .getElementById("clues")
+        .value
+        .split("\n")
+        .map(function(clue) {
+          return clue.trim();
+        })
+        .filter(function(clue) {
+          return clue.length > 0;
+        });
+
+
+      const mission = {
+
+        id: Date.now(),
+
+        number: Number(
+          document.getElementById("missionNumber").value
+        ),
+
+        name:
+          document.getElementById("missionName").value.trim(),
+
+        reward:
+          Number(
+            document.getElementById("rewardMoney").value
+          ),
+
+        time:
+          Number(
+            document.getElementById("timeLimit").value
+          ),
+
+        teams: [
+
+          document.getElementById("team1").value.trim(),
+
+          document.getElementById("team2").value.trim(),
+
+          document.getElementById("team3").value.trim(),
+
+          document.getElementById("team4").value.trim()
+
+        ],
+
+        story:
+          document.getElementById("story").value.trim(),
+
+        instructions:
+          document.getElementById("instructions").value.trim(),
+
+        clues: clues
+
+      };
+
+
+      missions.push(mission);
+
+      saveMissions();
+
+      missionForm.reset();
+
+      document.getElementById("timeLimit").value = 5;
+
+      document.getElementById("missionNumber").value =
+        missions.length + 1;
+
+      document.getElementById("team1").value = "Team 1";
+      document.getElementById("team2").value = "Team 2";
+      document.getElementById("team3").value = "Team 3";
+      document.getElementById("team4").value = "Team 4";
+
+
+      renderMissionList();
+
+      alert("Mission saved!");
+
+    });
+
+
+    function startMission(mission) {
+
+      currentMission = mission;
+
+      clearInterval(timerInterval);
+
+      timerRunning = false;
+
+      revealedClues = 0;
+
+      timeRemaining = mission.time * 60;
+
+
+      teacherPanel.style.display = "none";
+
+      game.style.display = "block";
+
+
+      gameMissionNumber.textContent =
+        "MISSION " +
+        String(mission.number).padStart(2, "0");
+
+
+      gameReward.textContent =
+        "REWARD: " + mission.reward;
+
+
+      gameTitle.textContent =
+        mission.name;
+
+
+      gameStory.textContent =
+        mission.story;
+
+
+      gameInstructions.textContent =
+        mission.instructions;
+
+
+      timerElement.classList.remove("finished");
+
+
+      updateTimer();
+
+
+      cluesContainer.innerHTML = "";
+
+      winnerSection.style.display = "none";
+
+      result.style.display = "none";
+
+      winnerButtons.innerHTML = "";
+
+
+      renderScoreboard();
+
+    }
+
+
+    function updateTimer() {
+
+      const minutes =
+        Math.floor(timeRemaining / 60);
+
+      const seconds =
+        timeRemaining % 60;
+
+
+      timerElement.textContent =
+        String(minutes).padStart(2, "0") +
+        ":" +
+        String(seconds).padStart(2, "0");
+
+    }
+
+
+    startTimerButton.addEventListener("click", function() {
+
+      if (timerRunning || timeRemaining <= 0) {
+        return;
+      }
+
+
+      timerRunning = true;
+
+      startTimerButton.disabled = true;
+
+      startTimerButton.textContent =
+        "⏱ TIMER RUNNING";
+
+
+      timerInterval = setInterval(function() {
+
+        timeRemaining--;
+
+        updateTimer();
+
+
+        if (timeRemaining <= 0) {
+
+          clearInterval(timerInterval);
+
+          timerRunning = false;
 
           timerElement.textContent =
-            String(minutes).padStart(2, "0") +
-            ":" +
-            String(seconds).padStart(2, "0");
+            "TIME'S UP";
 
-          if (time <= 0) {
-            clearInterval(interval);
-            timerElement.textContent = "TIME'S UP";
-          }
-        }, 1000);
-      }
+          timerElement.classList.add("finished");
+
+          startTimerButton.disabled = true;
+
+          endMission();
+
+        }
+
+      }, 1000);
+
     });
+
+
+    revealClueButton.addEventListener("click", function() {
+
+      if (!currentMission) {
+        return;
+      }
+
+
+      if (
+        revealedClues >=
+        currentMission.clues.length
+      ) {
+
+        revealClueButton.textContent =
+          "NO MORE CLUES";
+
+        return;
+
+      }
+
+
+      const clue =
+        currentMission.clues[revealedClues];
+
+
+      const clueElement =
+        document.createElement("div");
+
+      clueElement.className = "clue";
+
+      clueElement.textContent =
+        "CLUE " +
+        (revealedClues + 1) +
+        ": " +
+        clue;
+
+
+      cluesContainer.appendChild(clueElement);
+
+
+      revealedClues++;
+
+    });
+
+
+    endMissionButton.addEventListener("click", function() {
+
+      endMission();
+
+    });
+
+
+    function endMission() {
+
+      clearInterval(timerInterval);
+
+      timerRunning = false;
+
+      startTimerButton.disabled = true;
+
+      endMissionButton.disabled = true;
+
+      revealClueButton.disabled = true;
+
+
+      winnerSection.style.display = "block";
+
+
+      winnerButtons.innerHTML = "";
+
+
+      currentMission.teams.forEach(function(team, index) {
+
+        const button =
+          document.createElement("button");
+
+        button.className = "winner-btn";
+
+        button.textContent =
+          "🏆 " + team + " WINS";
+
+
+        button.addEventListener("click", function() {
+
+          chooseWinner(index);
+
+        });
+
+
+        winnerButtons.appendChild(button);
+
+      });
+
+    }
+
+
+    function chooseWinner(index) {
+
+      const team =
+        currentMission.teams[index];
+
+
+      if (!scores[team]) {
+        scores[team] = 0;
+      }
+
+
+      scores[team] +=
+        Number(currentMission.reward);
+
+
+      saveScores();
+
+
+      winnerSection.style.display = "none";
+
+      result.style.display = "block";
+
+
+      winnerName.textContent =
+        team + " WINS!";
+
+
+      winnerMessage.textContent =
+        "+" +
+        currentMission.reward +
+        " added to " +
+        team +
+        "'s total.";
+
+
+      renderScoreboard();
+
+    }
+
+
+    function renderScoreboard() {
+
+      if (!currentMission) {
+        return;
+      }
+
+
+      scoreboard.innerHTML = "";
+
+
+      currentMission.teams.forEach(function(team) {
+
+        if (!scores[team]) {
+          scores[team] = 0;
+        }
+
+
+        const card =
+          document.createElement("div");
+
+        card.className = "team-score";
+
+
+        card.innerHTML = `
+          <div class="team-name">
+            ${escapeHtml(team)}
+          </div>
+
+          <div class="money">
+            ${scores[team]}
+          </div>
+        `;
+
+
+        scoreboard.appendChild(card);
+
+      });
+
+
+      saveScores();
+
+    }
+
+
+    backToMissions.addEventListener("click", function() {
+
+      clearInterval(timerInterval);
+
+      currentMission = null;
+
+      teacherPanel.style.display = "block";
+
+      game.style.display = "none";
+
+      startTimerButton.disabled = false;
+
+      startTimerButton.textContent =
+        "▶ START TIMER";
+
+      endMissionButton.disabled = false;
+
+      revealClueButton.disabled = false;
+
+      renderMissionList();
+
+    });
+
+
+    function escapeHtml(text) {
+
+      const div =
+        document.createElement("div");
+
+      div.textContent = text;
+
+      return div.innerHTML;
+
+    }
+
+
+    renderMissionList();
+
   </script>
 
 </body>
