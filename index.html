@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>M-QUEST</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 50% 35%, #18253f 0%, #0b1020 38%, #050711 75%);
+      color: white;
+      font-family: Arial, Helvetica, sans-serif;
+      overflow: hidden;
+    }
+
+    .screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      text-align: center;
+      position: relative;
+    }
+
+    .stars {
+      position: absolute;
+      inset: 0;
+      opacity: 0.55;
+      background-image:
+        radial-gradient(circle, white 1px, transparent 1px),
+        radial-gradient(circle, #7dd3fc 1px, transparent 1px);
+      background-size: 90px 90px, 140px 140px;
+      background-position: 20px 30px, 70px 80px;
+    }
+
+    .content {
+      position: relative;
+      z-index: 2;
+      max-width: 1000px;
+      width: 100%;
+    }
+
+    .tag {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 7px;
+      color: #67e8f9;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    .logo {
+      font-size: clamp(70px, 14vw, 170px);
+      font-weight: 1000;
+      letter-spacing: 12px;
+      line-height: 0.9;
+      text-shadow:
+        0 0 20px rgba(103, 232, 249, 0.25),
+        0 0 60px rgba(103, 232, 249, 0.12);
+    }
+
+    .logo span {
+      color: #67e8f9;
+    }
+
+    .subtitle {
+      margin-top: 28px;
+      font-size: clamp(18px, 3vw, 30px);
+      font-weight: 700;
+      letter-spacing: 5px;
+      color: #cbd5e1;
+      text-transform: uppercase;
+    }
+
+    .description {
+      margin: 24px auto 0;
+      max-width: 650px;
+      color: #94a3b8;
+      font-size: clamp(16px, 2vw, 21px);
+      line-height: 1.7;
+    }
+
+    .start {
+      margin-top: 45px;
+      min-width: 280px;
+      padding: 20px 38px;
+      border: 2px solid #67e8f9;
+      border-radius: 14px;
+      background: #67e8f9;
+      color: #06111d;
+      font-size: 20px;
+      font-weight: 1000;
+      letter-spacing: 3px;
+      cursor: pointer;
+      box-shadow: 0 0 35px rgba(103, 232, 249, 0.18);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .start:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 55px rgba(103, 232, 249, 0.35);
+    }
+
+    .bottom {
+      position: absolute;
+      bottom: 25px;
+      left: 0;
+      right: 0;
+      color: #475569;
+      font-size: 12px;
+      letter-spacing: 3px;
+      font-weight: 700;
+      z-index: 2;
+    }
+
+    .mission {
+      display: none;
+      position: relative;
+      z-index: 3;
+      width: 100%;
+      max-width: 1000px;
+    }
+
+    .mission-label {
+      color: #67e8f9;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 6px;
+    }
+
+    .mission h1 {
+      margin-top: 25px;
+      font-size: clamp(45px, 8vw, 100px);
+      font-weight: 1000;
+      letter-spacing: 3px;
+    }
+
+    .mission-box {
+      margin: 35px auto 0;
+      max-width: 750px;
+      padding: 35px;
+      border: 1px solid #334155;
+      border-radius: 22px;
+      background: rgba(15, 23, 42, 0.72);
+    }
+
+    .mission-box p {
+      font-size: clamp(20px, 3vw, 32px);
+      line-height: 1.5;
+      font-weight: 700;
+    }
+
+    .timer {
+      margin-top: 30px;
+      font-size: 48px;
+      font-weight: 1000;
+      color: #fbbf24;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="screen">
+
+    <div class="stars"></div>
+
+    <section class="content" id="home">
+
+      <div class="tag">A SPEAKING ADVENTURE</div>
+
+      <div class="logo">
+        M<span>-</span>QUEST
+      </div>
+
+      <div class="subtitle">
+        Speak. Discover. Solve.
+      </div>
+
+      <p class="description">
+        Enter the mission. Work together. Speak English.
+        Discover the truth before time runs out.
+      </p>
+
+      <button class="start" id="startButton">
+        START MISSION
+      </button>
+
+    </section>
+
+    <section class="mission" id="mission">
+
+      <div class="mission-label">
+        MISSION 01
+      </div>
+
+      <h1>THE LOST PASSPORT</h1>
+
+      <div class="mission-box">
+        <p>
+          Something has gone wrong at the airport.
+          A passenger has lost their passport.
+          Find out what happened.
+        </p>
+
+        <div class="timer" id="timer">
+          05:00
+        </div>
+      </div>
+
+    </section>
+
+    <div class="bottom">
+      CREATED FOR ENGLISH SPEAKING
+    </div>
+
+  </main>
+
+  <script>
+    const startButton = document.getElementById("startButton");
+    const home = document.getElementById("home");
+    const mission = document.getElementById("mission");
+    const timerElement = document.getElementById("timer");
+
+    let time = 300;
+    let timerStarted = false;
+
+    startButton.addEventListener("click", function () {
+      home.style.display = "none";
+      mission.style.display = "block";
+
+      if (!timerStarted) {
+        timerStarted = true;
+
+        const interval = setInterval(function () {
+          time--;
+
+          const minutes = Math.floor(time / 60);
+          const seconds = time % 60;
+
+          timerElement.textContent =
+            String(minutes).padStart(2, "0") +
+            ":" +
+            String(seconds).padStart(2, "0");
+
+          if (time <= 0) {
+            clearInterval(interval);
+            timerElement.textContent = "TIME'S UP";
+          }
+        }, 1000);
+      }
+    });
+  </script>
+
+</body>
+</html>
