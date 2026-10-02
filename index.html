@@ -3,500 +3,388 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>M-QUEST</title>
+
+  <title>Class Battle</title>
 
   <style>
+    :root {
+      --bg: #0b0d12;
+      --panel: #141821;
+      --card: #1b202b;
+      --text: #f5f7fb;
+      --muted: #9ca5b5;
+      --line: #2a3140;
+      --accent: #7c5cff;
+      --good: #35d07f;
+      --danger: #ff5d6c;
+    }
+
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
     }
 
     body {
-      min-height: 100vh;
-      background:
-        radial-gradient(circle at 50% 35%, #18253f 0%, #0b1020 38%, #050711 75%);
-      color: white;
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
       font-family: Arial, Helvetica, sans-serif;
-      overflow-x: hidden;
-      transition: background 0.08s ease;
     }
 
-    body.emergency {
-      background:
-        radial-gradient(circle at 50% 35%, #7f1d1d 0%, #450a0a 35%, #050711 75%);
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
     }
 
     button {
-      font-family: inherit;
-    }
-
-    .screen {
-      min-height: 100vh;
-      padding: 30px;
-      text-align: center;
-      position: relative;
-    }
-
-    .stars {
-      position: fixed;
-      inset: 0;
-      opacity: 0.4;
-      pointer-events: none;
-      background-image:
-        radial-gradient(circle, white 1px, transparent 1px),
-        radial-gradient(circle, #7dd3fc 1px, transparent 1px);
-      background-size: 90px 90px, 140px 140px;
-      background-position: 20px 30px, 70px 80px;
+      cursor: pointer;
     }
 
     .app {
-      position: relative;
-      z-index: 2;
-      width: 100%;
-      max-width: 1200px;
+      max-width: 1180px;
       margin: auto;
+      padding: 24px;
+    }
+
+    /* HEADER */
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
     }
 
     .brand {
-      padding: 25px 0;
-    }
-
-    .tag {
-      color: #67e8f9;
-      font-size: 14px;
+      font-size: 28px;
       font-weight: 900;
-      letter-spacing: 5px;
-      margin-bottom: 10px;
+      letter-spacing: -1px;
     }
 
-    .logo {
-      font-size: clamp(55px, 10vw, 120px);
-      font-weight: 1000;
-      letter-spacing: 10px;
+    .brand span {
+      color: var(--accent);
     }
 
-    .logo span {
-      color: #67e8f9;
-    }
-
-    .exclusive {
-      margin-top: 12px;
-      color: #fbbf24;
-      font-size: 15px;
-      font-weight: 1000;
-      letter-spacing: 2px;
-    }
-
-    .motto {
-      margin-top: 10px;
-      color: #67e8f9;
-      font-size: 13px;
-      font-weight: 900;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-
-    .panel {
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid #334155;
-      border-radius: 20px;
-      padding: 28px;
-      margin-top: 20px;
-      text-align: left;
-    }
-
-    .panel h2 {
-      color: #67e8f9;
-      margin-bottom: 22px;
-      letter-spacing: 2px;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-    }
-
-    .field {
+    .top-actions {
       display: flex;
-      flex-direction: column;
-      gap: 7px;
+      gap: 8px;
     }
 
-    .field.full {
-      grid-column: 1 / -1;
+    /* BUTTONS */
+
+    .btn {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--line);
+      padding: 11px 15px;
+      border-radius: 11px;
+      font-weight: 700;
     }
 
-    label {
-      color: #cbd5e1;
-      font-weight: 800;
-      font-size: 14px;
+    .btn:hover {
+      border-color: #555f73;
     }
 
-    input,
-    textarea {
-      width: 100%;
-      padding: 14px;
-      border-radius: 10px;
-      border: 1px solid #475569;
-      background: #080d1a;
-      color: white;
-      font-size: 16px;
-      outline: none;
-    }
-
-    textarea {
-      min-height: 110px;
-      resize: vertical;
-    }
-
-    input:focus,
-    textarea:focus {
-      border-color: #67e8f9;
-    }
-
-    .teams {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-    }
-
-    .main-btn,
-    .small-btn {
-      border: none;
-      border-radius: 10px;
-      padding: 14px 20px;
-      font-weight: 900;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .main-btn {
-      background: #67e8f9;
-      color: #06111d;
-      font-size: 16px;
-    }
-
-    .main-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 25px rgba(103,232,249,.25);
-    }
-
-    .small-btn {
-      background: #1e293b;
-      color: white;
-      border: 1px solid #475569;
-    }
-
-    .small-btn:hover {
-      border-color: #67e8f9;
+    .primary {
+      background: var(--accent);
+      border-color: var(--accent);
     }
 
     .danger {
-      border-color: #ef4444;
-      color: #fecaca;
+      color: #ff8792;
     }
 
-    .mission-list {
-      display: grid;
-      gap: 12px;
-    }
-
-    .mission-card {
-      background: #080d1a;
-      border: 1px solid #334155;
-      border-radius: 12px;
-      padding: 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .mission-card h3 {
-      margin-bottom: 6px;
-    }
-
-    .mission-card p {
-      color: #94a3b8;
-      font-size: 14px;
-    }
-
-    .actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .game {
-      display: none;
-    }
-
-    .game-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 20px;
-    }
-
-    .mission-number {
-      color: #67e8f9;
-      font-weight: 900;
-      letter-spacing: 4px;
-    }
-
-    .reward {
-      color: #fbbf24;
-      font-size: 24px;
-      font-weight: 1000;
-    }
-
-    .game-title {
-      font-size: clamp(40px, 7vw, 90px);
-      font-weight: 1000;
-      margin: 15px 0 25px;
-      line-height: 1;
-    }
-
-    .story-box {
-      background: rgba(15,23,42,.9);
-      border: 1px solid #334155;
-      border-radius: 18px;
-      padding: 28px;
-      margin-bottom: 20px;
-    }
-
-    .story-box h3 {
-      color: #67e8f9;
-      margin-bottom: 12px;
-      letter-spacing: 2px;
-    }
-
-    .story-box p {
-      color: #e2e8f0;
-      font-size: clamp(18px, 2.5vw, 28px);
-      line-height: 1.5;
-    }
-
-    .timer-settings {
-      margin: 20px auto 5px;
-      max-width: 420px;
-      background: rgba(15,23,42,.95);
-      border: 1px solid #334155;
-      border-radius: 15px;
-      padding: 16px;
-    }
-
-    .timer-settings label {
-      display: block;
-      text-align: center;
-      margin-bottom: 8px;
-      color: #67e8f9;
-      letter-spacing: 1px;
-    }
-
-    .timer-settings input {
-      text-align: center;
-      font-size: 22px;
-      font-weight: 900;
-    }
-
-    .timer {
-      font-size: clamp(60px, 10vw, 120px);
-      font-weight: 1000;
-      color: #fbbf24;
-      margin: 20px 0;
-      letter-spacing: 5px;
-      transition: color 0.1s ease;
-    }
-
-    .timer.finished {
-      color: #ef4444;
-    }
-
-    .timer.emergency-timer {
-      color: #ff1f1f;
-      text-shadow:
-        0 0 10px #ff0000,
-        0 0 25px #ff0000,
-        0 0 45px #ff0000;
-    }
-
-    .control-bar {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin: 20px 0;
-    }
-
-    .clues {
-      display: grid;
-      gap: 10px;
-      margin-top: 15px;
-    }
-
-    .clue {
-      background: #111827;
-      border-left: 4px solid #67e8f9;
-      padding: 15px;
-      font-size: 18px;
-      text-align: left;
-      border-radius: 8px;
-    }
+    /* TEAMS */
 
     .scoreboard {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 12px;
-      margin: 25px 0;
-    }
-
-    .team-score {
-      background: #0f172a;
-      border: 1px solid #334155;
-      border-radius: 14px;
-      padding: 18px;
-      text-align: center;
-    }
-
-    .team-score .team-name {
-      font-weight: 900;
-      color: #cbd5e1;
-      font-size: 17px;
-    }
-
-    .team-score .money {
-      color: #fbbf24;
-      font-size: 30px;
-      font-weight: 1000;
-      margin-top: 8px;
-    }
-
-    .winner-section {
-      display: none;
-      margin-top: 25px;
-      padding: 25px;
-      border: 1px solid #fbbf24;
-      border-radius: 18px;
-      background: rgba(120, 83, 10, 0.12);
-    }
-
-    .winner-section h2 {
-      text-align: center;
-      color: #fbbf24;
       margin-bottom: 20px;
     }
 
-    .winner-buttons {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-    }
-
-    .winner-btn {
-      background: #172033;
-      color: white;
-      border: 1px solid #475569;
-      border-radius: 10px;
-      padding: 16px;
-      cursor: pointer;
-      font-weight: 900;
-    }
-
-    .winner-btn:hover {
-      border-color: #fbbf24;
-      color: #fbbf24;
-    }
-
-    .result {
-      display: none;
-      text-align: center;
-      padding: 35px;
-    }
-
-    .result h1 {
-      font-size: clamp(40px, 8vw, 85px);
-      color: #fbbf24;
-      margin-bottom: 15px;
-    }
-
-    .result p {
-      color: #cbd5e1;
-      font-size: 24px;
-    }
-
-    .next-btn {
-      background: #67e8f9;
-      color: #06111d;
-      border: none;
-      border-radius: 12px;
-      padding: 18px 35px;
-      font-size: 18px;
-      font-weight: 1000;
-      letter-spacing: 2px;
-      cursor: pointer;
+    .team {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px;
       transition: 0.2s;
     }
 
-    .next-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 0 30px rgba(103,232,249,.3);
+    .team.active {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px #7c5cff33;
     }
 
-    .hidden {
-      display: none !important;
+    .team-name {
+      font-weight: 800;
+      font-size: 15px;
     }
 
-    @keyframes emergencyFlash {
-      0% {
-        background: #050711;
-      }
-
-      50% {
-        background: #7f0000;
-      }
-
-      100% {
-        background: #050711;
-      }
+    .money {
+      font-size: 30px;
+      font-weight: 900;
+      margin: 12px 0;
     }
 
-    body.emergency {
-      animation: emergencyFlash 0.45s infinite;
+    .team-controls {
+      display: flex;
+      gap: 7px;
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      body.emergency {
-        animation: none;
-        background: #7f0000;
-      }
+    .small {
+      padding: 8px 10px;
+      border-radius: 9px;
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--line);
+      font-weight: 800;
     }
 
-    @media (max-width: 700px) {
-      .form-grid {
-        grid-template-columns: 1fr;
-      }
+    /* MAIN */
 
-      .field.full {
-        grid-column: auto;
-      }
+    .main {
+      display: grid;
+      grid-template-columns: 1.4fr 0.8fr;
+      gap: 16px;
+    }
 
-      .teams,
-      .scoreboard,
-      .winner-buttons {
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 22px;
+    }
+
+    /* GAME */
+
+    .selected {
+      text-align: center;
+      padding: 22px 10px;
+    }
+
+    .label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .selected h2 {
+      font-size: 36px;
+      margin: 8px 0 20px;
+    }
+
+    .challenge-title {
+      font-size: 15px;
+      color: var(--accent);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .challenge-text {
+      font-size: 32px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin: 14px auto;
+      max-width: 760px;
+    }
+
+    /* TIMER */
+
+    .timer {
+      font-variant-numeric: tabular-nums;
+      font-size: 78px;
+      font-weight: 900;
+      letter-spacing: -3px;
+      margin: 16px 0;
+    }
+
+    .timer.done {
+      color: var(--danger);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 9px;
+    }
+
+    .actions .btn {
+      min-width: 130px;
+    }
+
+    /* MONEY */
+
+    .money-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .money-actions button {
+      flex: 1;
+      min-width: 90px;
+    }
+
+    /* SIDE PANEL */
+
+    .side h3 {
+      margin-top: 0;
+      margin-bottom: 12px;
+    }
+
+    .form {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      background: #0f1219;
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    /* CHALLENGES */
+
+    .challenge-list {
+      display: grid;
+      gap: 8px;
+      max-height: 330px;
+      overflow-y: auto;
+    }
+
+    .challenge-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      background: var(--card);
+      padding: 11px;
+      border-radius: 10px;
+    }
+
+    .challenge-item strong {
+      display: block;
+    }
+
+    .challenge-item small {
+      color: var(--muted);
+    }
+
+    .empty {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* FINAL SCREEN */
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: #05060acc;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 10;
+    }
+
+    .overlay.show {
+      display: flex;
+    }
+
+    .modal {
+      width: min(620px, 100%);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .modal h1 {
+      font-size: 48px;
+      margin: 8px 0 20px;
+    }
+
+    .final {
+      display: grid;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .final div {
+      display: flex;
+      justify-content: space-between;
+      background: var(--card);
+      padding: 14px;
+      border-radius: 11px;
+      font-weight: 800;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 850px) {
+
+      .scoreboard {
         grid-template-columns: repeat(2, 1fr);
       }
 
-      .mission-card {
-        flex-direction: column;
-        align-items: flex-start;
+      .main {
+        grid-template-columns: 1fr;
       }
 
-      .game-header {
+      .challenge-text {
+        font-size: 25px;
+      }
+
+      .timer {
+        font-size: 62px;
+      }
+    }
+
+    @media (max-width: 500px) {
+
+      .app {
+        padding: 14px;
+      }
+
+      .top {
+        align-items: flex-start;
         flex-direction: column;
+      }
+
+      .money {
+        font-size: 24px;
+      }
+
+      .timer {
+        font-size: 55px;
       }
     }
   </style>
@@ -504,1748 +392,793 @@
 
 <body>
 
-  <main class="screen">
-    <div class="stars"></div>
+<div class="app">
 
-    <div class="app">
+  <!-- HEADER -->
 
-      <div class="brand">
+  <header class="top">
 
-        <div class="tag">
-          A SPEAKING ADVENTURE
+    <div class="brand">
+      CLASS <span>BATTLE</span>
+    </div>
+
+    <div class="top-actions">
+      <button class="btn" id="resetBtn">
+        Reset
+      </button>
+
+      <button class="btn primary" id="finishBtn">
+        Finish Game
+      </button>
+    </div>
+
+  </header>
+
+
+  <!-- SCOREBOARD -->
+
+  <section class="scoreboard" id="scoreboard"></section>
+
+
+  <!-- MAIN -->
+
+  <main class="main">
+
+
+    <!-- GAME AREA -->
+
+    <section class="panel">
+
+      <div class="selected">
+
+        <div class="label">
+          Current Team
         </div>
 
-        <div class="logo">
-          M<span>-</span>QUEST
+        <h2 id="currentTeam">
+          No team selected
+        </h2>
+
+
+        <div class="challenge-title" id="challengeTitle">
+          Choose a challenge
         </div>
 
-        <div class="exclusive">
-          THIS GAME IS FOR MONTHER'S STUDENTS — BECAUSE THEY'RE THE BEST.
+
+        <div class="challenge-text" id="challengeText">
+          Add your own challenge, then pick a team.
         </div>
 
-        <div class="motto">
-          EXCLUSIVE TO MR. MONTHER'S STUDENTS
+
+        <div class="timer" id="timer">
+          30
+        </div>
+
+
+        <div class="actions">
+
+          <button class="btn primary" id="pickBtn">
+            🎲 Pick Random Team
+          </button>
+
+          <button class="btn" id="timerBtn">
+            ⏱ Start Timer
+          </button>
+
+          <button class="btn" id="nextBtn">
+            Next Challenge
+          </button>
+
+        </div>
+
+
+        <!-- MONEY BUTTONS -->
+
+        <div class="money-actions">
+
+          <button class="btn" data-money="500">
+            +500
+          </button>
+
+          <button class="btn" data-money="1000">
+            +1,000
+          </button>
+
+          <button class="btn" data-money="2000">
+            +2,000
+          </button>
+
+          <button class="btn danger" data-money="-500">
+            −500
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- SETUP PANEL -->
+
+    <aside class="panel side">
+
+      <h3>
+        Game Setup
+      </h3>
+
+
+      <!-- TEAM NAMES -->
+
+      <div class="form">
+
+        <div class="row">
+
+          <input
+            id="teamA"
+            value="Team A"
+            placeholder="Team A"
+          >
+
+          <input
+            id="teamB"
+            value="Team B"
+            placeholder="Team B"
+          >
+
+        </div>
+
+
+        <div class="row">
+
+          <input
+            id="teamC"
+            value="Team C"
+            placeholder="Team C"
+          >
+
+          <input
+            id="teamD"
+            value="Team D"
+            placeholder="Team D"
+          >
+
+        </div>
+
+
+        <button class="btn" id="updateTeams">
+          Update Team Names
+        </button>
+
+      </div>
+
+
+      <!-- ADD CHALLENGE -->
+
+      <h3>
+        Add Challenge
+      </h3>
+
+      <div class="form">
+
+        <input
+          id="newTitle"
+          placeholder="Challenge name"
+        >
+
+
+        <textarea
+          id="newText"
+          placeholder="Write the challenge here..."
+        ></textarea>
+
+
+        <div class="row">
+
+          <select id="newTime">
+
+            <option value="30">
+              30 sec
+            </option>
+
+            <option value="45">
+              45 sec
+            </option>
+
+            <option value="60">
+              60 sec
+            </option>
+
+            <option value="90">
+              90 sec
+            </option>
+
+            <option value="120">
+              2 min
+            </option>
+
+          </select>
+
+
+          <button class="btn primary" id="addChallenge">
+            Add Challenge
+          </button>
+
         </div>
 
       </div>
 
 
-      <!-- TEACHER PANEL -->
+      <!-- CHALLENGE LIST -->
 
-      <section id="teacherPanel">
+      <h3>
+        Your Challenges
+      </h3>
 
-        <div class="panel">
+      <div
+        class="challenge-list"
+        id="challengeList"
+      ></div>
 
-          <h2>
-            GAME MASTER — CREATE MISSION
-          </h2>
+    </aside>
 
-          <form id="missionForm">
-
-            <div class="form-grid">
-
-              <div class="field">
-
-                <label>
-                  Mission Name
-                </label>
-
-                <input
-                  id="missionName"
-                  type="text"
-                  placeholder="Example: The Missing Diamond"
-                  required
-                >
-
-              </div>
-
-
-              <div class="field">
-
-                <label>
-                  Reward Money
-                </label>
-
-                <input
-                  id="rewardMoney"
-                  type="number"
-                  min="0"
-                  placeholder="500"
-                  required
-                >
-
-              </div>
-
-
-              <div class="field">
-
-                <label>
-                  Default Time Limit (minutes)
-                </label>
-
-                <input
-                  id="timeLimit"
-                  type="number"
-                  min="1"
-                  value="5"
-                  required
-                >
-
-              </div>
-
-
-              <div class="field">
-
-                <label>
-                  Mission Number
-                </label>
-
-                <input
-                  id="missionNumber"
-                  type="number"
-                  min="1"
-                  value="1"
-                  required
-                >
-
-              </div>
-
-
-              <div class="field full">
-
-                <label>
-                  Team Names
-                </label>
-
-                <div class="teams">
-
-                  <input
-                    id="team1"
-                    value="Team 1"
-                    required
-                  >
-
-                  <input
-                    id="team2"
-                    value="Team 2"
-                    required
-                  >
-
-                  <input
-                    id="team3"
-                    value="Team 3"
-                    required
-                  >
-
-                  <input
-                    id="team4"
-                    value="Team 4"
-                    required
-                  >
-
-                </div>
-
-              </div>
-
-
-              <div class="field full">
-
-                <label>
-                  Mission Story / Situation
-                </label>
-
-                <textarea
-                  id="story"
-                  placeholder="Tell the students what happened..."
-                  required
-                ></textarea>
-
-              </div>
-
-
-              <div class="field full">
-
-                <label>
-                  Instructions
-                </label>
-
-                <textarea
-                  id="instructions"
-                  placeholder="What do the students have to do?"
-                  required
-                ></textarea>
-
-              </div>
-
-
-              <div class="field full">
-
-                <label>
-                  Clues — one clue per line
-                </label>
-
-                <textarea
-                  id="clues"
-                  placeholder="The person was wearing a blue jacket.
-The passport was found near the hotel.
-Someone saw him at 8 PM."
-                ></textarea>
-
-              </div>
-
-            </div>
-
-
-            <div style="margin-top:20px;">
-
-              <button
-                class="main-btn"
-                type="submit"
-              >
-                SAVE MISSION
-              </button>
-
-            </div>
-
-          </form>
-
-        </div>
-
-
-        <div class="panel">
-
-          <h2>
-            SAVED MISSIONS
-          </h2>
-
-          <div
-            id="missionList"
-            class="mission-list"
-          >
-            <p style="color:#94a3b8;">
-              No missions saved yet.
-            </p>
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- GAME SCREEN -->
-
-      <section
-        id="game"
-        class="game"
-      >
-
-        <div class="game-header">
-
-          <div
-            class="mission-number"
-            id="gameMissionNumber"
-          >
-            MISSION 01
-          </div>
-
-          <div
-            class="reward"
-            id="gameReward"
-          >
-            $0
-          </div>
-
-        </div>
-
-
-        <div
-          class="game-title"
-          id="gameTitle"
-        >
-          MISSION
-        </div>
-
-
-        <div class="story-box">
-
-          <h3>
-            THE SITUATION
-          </h3>
-
-          <p id="gameStory"></p>
-
-        </div>
-
-
-        <div class="story-box">
-
-          <h3>
-            YOUR MISSION
-          </h3>
-
-          <p id="gameInstructions"></p>
-
-        </div>
-
-
-        <!-- TIMER SETTINGS -->
-
-        <div class="timer-settings">
-
-          <label for="missionTimerInput">
-            SET TIME FOR THIS MISSION
-          </label>
-
-          <input
-            id="missionTimerInput"
-            type="number"
-            min="1"
-            value="5"
-          >
-
-        </div>
-
-
-        <div
-          class="timer"
-          id="timer"
-        >
-          05:00
-        </div>
-
-
-        <div class="control-bar">
-
-          <button
-            class="main-btn"
-            id="startTimer"
-          >
-            ▶️ START TIMER
-          </button>
-
-          <button
-            class="small-btn"
-            id="revealClue"
-          >
-            🔎 REVEAL CLUE
-          </button>
-
-          <button
-            class="small-btn danger"
-            id="endMission"
-          >
-            ■ END MISSION
-          </button>
-
-        </div>
-
-
-        <div
-          id="cluesContainer"
-          class="clues"
-        ></div>
-
-
-        <div
-          class="scoreboard"
-          id="scoreboard"
-        ></div>
-
-
-        <div
-          class="winner-section"
-          id="winnerSection"
-        >
-
-          <h2>
-            GAME MASTER — CHOOSE THE WINNING TEAM
-          </h2>
-
-          <div
-            class="winner-buttons"
-            id="winnerButtons"
-          ></div>
-
-        </div>
-
-
-        <div
-          class="result"
-          id="result"
-        >
-
-          <h1 id="winnerName"></h1>
-
-          <p id="winnerMessage"></p>
-
-
-          <div
-            style="
-              margin-top:25px;
-              display:flex;
-              justify-content:center;
-              gap:12px;
-              flex-wrap:wrap;
-            "
-          >
-
-            <button
-              class="next-btn"
-              id="nextMission"
-            >
-              NEXT MISSION →
-            </button>
-
-
-            <button
-              class="small-btn"
-              id="backToMissions"
-            >
-              ← BACK TO MISSIONS
-            </button>
-
-          </div>
-
-        </div>
-
-      </section>
-
-    </div>
   </main>
 
-
-  <script>
-
-    const missionForm =
-      document.getElementById("missionForm");
-
-    const missionList =
-      document.getElementById("missionList");
-
-    const teacherPanel =
-      document.getElementById("teacherPanel");
-
-    const game =
-      document.getElementById("game");
-
-    const gameMissionNumber =
-      document.getElementById("gameMissionNumber");
-
-    const gameReward =
-      document.getElementById("gameReward");
-
-    const gameTitle =
-      document.getElementById("gameTitle");
-
-    const gameStory =
-      document.getElementById("gameStory");
-
-    const gameInstructions =
-      document.getElementById("gameInstructions");
-
-    const timerElement =
-      document.getElementById("timer");
-
-    const missionTimerInput =
-      document.getElementById("missionTimerInput");
-
-    const startTimerButton =
-      document.getElementById("startTimer");
-
-    const revealClueButton =
-      document.getElementById("revealClue");
-
-    const endMissionButton =
-      document.getElementById("endMission");
-
-    const cluesContainer =
-      document.getElementById("cluesContainer");
-
-    const scoreboard =
-      document.getElementById("scoreboard");
-
-    const winnerSection =
-      document.getElementById("winnerSection");
-
-    const winnerButtons =
-      document.getElementById("winnerButtons");
-
-    const result =
-      document.getElementById("result");
-
-    const winnerName =
-      document.getElementById("winnerName");
-
-    const winnerMessage =
-      document.getElementById("winnerMessage");
-
-    const nextMissionButton =
-      document.getElementById("nextMission");
-
-    const backToMissions =
-      document.getElementById("backToMissions");
+</div>
 
 
-    let missions =
-      JSON.parse(
-        localStorage.getItem("mquest_missions") || "[]"
-      );
+<!-- FINAL SCORE POPUP -->
+
+<div
+  class="overlay"
+  id="finishOverlay"
+>
+
+  <div class="modal">
+
+    <div class="label">
+      Game Complete
+    </div>
+
+    <h1>
+      CLASS BATTLE
+    </h1>
+
+    <div
+      class="final"
+      id="finalScores"
+    ></div>
+
+    <button
+      class="btn primary"
+      id="closeFinish"
+    >
+      Close
+    </button>
+
+  </div>
+
+</div>
 
 
-    let scores =
-      JSON.parse(
-        localStorage.getItem("mquest_scores") || "{}"
-      );
+<script>
 
+(() => {
 
-    let currentMission = null;
+  /* =========================
+     GAME DATA
+  ========================= */
 
-    let timeRemaining = 0;
+  const state = {
 
-    let timerInterval = null;
+    teams: [
 
-    let timerRunning = false;
+      {
+        name: "Team A",
+        money: 5000
+      },
 
-    let revealedClues = 0;
+      {
+        name: "Team B",
+        money: 5000
+      },
 
-    let audioContext = null;
+      {
+        name: "Team C",
+        money: 5000
+      },
 
-    let emergencyMode = false;
-
-
-    function saveMissions() {
-
-      localStorage.setItem(
-        "mquest_missions",
-        JSON.stringify(missions)
-      );
-
-    }
-
-
-    function saveScores() {
-
-      localStorage.setItem(
-        "mquest_scores",
-        JSON.stringify(scores)
-      );
-
-    }
-
-
-    function renderMissionList() {
-
-      if (missions.length === 0) {
-
-        missionList.innerHTML =
-          '<p style="color:#94a3b8;">No missions saved yet.</p>';
-
-        return;
-
+      {
+        name: "Team D",
+        money: 5000
       }
 
+    ],
 
-      missionList.innerHTML = "";
 
+    challenges: [
 
-      /*
-        Sort visually by Mission Number.
-        There is NO 20-mission limit.
-      */
+      {
+        title: "SPEAK FAST",
+        text: "TRAVEL",
+        time: 30
+      },
 
-      const sortedMissions =
-        missions
-          .map(function(mission, index) {
+      {
+        title: "DON'T SAY IT",
+        text: "Describe HOSPITAL without saying the word.",
+        time: 45
+      },
 
-            return {
-              mission: mission,
-              originalIndex: index
-            };
+      {
+        title: "SITUATION",
+        text: "You lost your phone. Ask your friend for help.",
+        time: 60
+      },
 
-          })
-          .sort(function(a, b) {
+      {
+        title: "STORY BUILDER",
+        text: "Create a story using DOG, RAIN and BUS.",
+        time: 60
+      }
 
-            return (
-              Number(a.mission.number) -
-              Number(b.mission.number)
-            );
+    ],
 
-          });
 
+    currentTeam: -1,
 
-      sortedMissions.forEach(
-        function(item) {
+    currentChallenge: -1,
 
-          const mission =
-            item.mission;
+    time: 30,
 
-          const index =
-            item.originalIndex;
+    interval: null
 
+  };
 
-          const card =
-            document.createElement("div");
 
-          card.className =
-            "mission-card";
+  /* =========================
+     HELPERS
+  ========================= */
 
+  function $(id) {
+    return document.getElementById(id);
+  }
 
-          const info =
-            document.createElement("div");
 
+  function escapeHtml(text) {
 
-          info.innerHTML = `
-            <h3>${escapeHtml(mission.name)}</h3>
+    return String(text).replace(
+      /[&<>"']/g,
 
-            <p>
-              Mission ${mission.number}
-              • Default ${mission.time} minutes
-              • Reward: ${mission.reward}
-            </p>
-          `;
+      function(match) {
 
+        const chars = {
 
-          const actions =
-            document.createElement("div");
-
-          actions.className =
-            "actions";
-
-
-          const useButton =
-            document.createElement("button");
-
-          useButton.className =
-            "main-btn";
-
-          useButton.textContent =
-            "USE MISSION";
-
-
-          useButton.addEventListener(
-            "click",
-            function() {
-
-              startMission(mission);
-
-            }
-          );
-
-
-          const deleteButton =
-            document.createElement("button");
-
-          deleteButton.className =
-            "small-btn danger";
-
-          deleteButton.textContent =
-            "DELETE";
-
-
-          deleteButton.addEventListener(
-            "click",
-            function() {
-
-              if (
-                confirm(
-                  "Delete this mission?"
-                )
-              ) {
-
-                missions.splice(
-                  index,
-                  1
-                );
-
-                saveMissions();
-
-                renderMissionList();
-
-              }
-
-            }
-          );
-
-
-          actions.appendChild(
-            useButton
-          );
-
-          actions.appendChild(
-            deleteButton
-          );
-
-
-          card.appendChild(
-            info
-          );
-
-          card.appendChild(
-            actions
-          );
-
-
-          missionList.appendChild(
-            card
-          );
-
-        }
-      );
-
-    }
-
-
-    missionForm.addEventListener(
-      "submit",
-      function(event) {
-
-        event.preventDefault();
-
-
-        const clues =
-          document
-            .getElementById("clues")
-            .value
-            .split("\n")
-            .map(function(clue) {
-
-              return clue.trim();
-
-            })
-            .filter(function(clue) {
-
-              return clue.length > 0;
-
-            });
-
-
-        const mission = {
-
-          id:
-            Date.now(),
-
-          number:
-            Number(
-              document.getElementById(
-                "missionNumber"
-              ).value
-            ),
-
-          name:
-            document.getElementById(
-              "missionName"
-            ).value.trim(),
-
-          reward:
-            Number(
-              document.getElementById(
-                "rewardMoney"
-              ).value
-            ),
-
-          time:
-            Number(
-              document.getElementById(
-                "timeLimit"
-              ).value
-            ),
-
-          teams: [
-
-            document.getElementById(
-              "team1"
-            ).value.trim(),
-
-            document.getElementById(
-              "team2"
-            ).value.trim(),
-
-            document.getElementById(
-              "team3"
-            ).value.trim(),
-
-            document.getElementById(
-              "team4"
-            ).value.trim()
-
-          ],
-
-          story:
-            document.getElementById(
-              "story"
-            ).value.trim(),
-
-          instructions:
-            document.getElementById(
-              "instructions"
-            ).value.trim(),
-
-          clues:
-            clues
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#039;"
 
         };
 
-
-        missions.push(
-          mission
-        );
-
-
-        saveMissions();
-
-
-        missionForm.reset();
-
-
-        document.getElementById(
-          "timeLimit"
-        ).value = 5;
-
-
-        /*
-          Automatically suggest the next number.
-          This does NOT limit the number of missions.
-        */
-
-        const highestMissionNumber =
-          missions.reduce(
-            function(max, item) {
-
-              return Math.max(
-                max,
-                Number(item.number) || 0
-              );
-
-            },
-            0
-          );
-
-
-        document.getElementById(
-          "missionNumber"
-        ).value =
-          highestMissionNumber + 1;
-
-
-        document.getElementById(
-          "team1"
-        ).value = "Team 1";
-
-        document.getElementById(
-          "team2"
-        ).value = "Team 2";
-
-        document.getElementById(
-          "team3"
-        ).value = "Team 3";
-
-        document.getElementById(
-          "team4"
-        ).value = "Team 4";
-
-
-        renderMissionList();
-
-
-        alert(
-          "Mission saved!"
-        );
+        return chars[match];
 
       }
     );
 
+  }
 
-    function startMission(mission) {
 
-      currentMission =
-        mission;
+  function formatTime(seconds) {
 
+    const minutes =
+      Math.floor(seconds / 60);
 
-      clearInterval(
-        timerInterval
-      );
+    const secs =
+      seconds % 60;
 
 
-      stopEmergency();
+    if (minutes > 0) {
 
-
-      timerRunning =
-        false;
-
-
-      revealedClues =
-        0;
-
-
-      /*
-        The saved time is now only
-        the DEFAULT time.
-
-        Teacher can change it
-        after selecting the mission.
-      */
-
-      const defaultMinutes =
-        Math.max(
-          1,
-          Number(mission.time) || 5
-        );
-
-
-      missionTimerInput.value =
-        defaultMinutes;
-
-
-      timeRemaining =
-        defaultMinutes * 60;
-
-
-      teacherPanel.style.display =
-        "none";
-
-
-      game.style.display =
-        "block";
-
-
-      gameMissionNumber.textContent =
-        "MISSION " +
-        String(
-          mission.number
-        ).padStart(
-          2,
-          "0"
-        );
-
-
-      gameReward.textContent =
-        "REWARD: " +
-        mission.reward;
-
-
-      gameTitle.textContent =
-        mission.name;
-
-
-      gameStory.textContent =
-        mission.story;
-
-
-      gameInstructions.textContent =
-        mission.instructions;
-
-
-      timerElement.classList.remove(
-        "finished"
-      );
-
-      timerElement.classList.remove(
-        "emergency-timer"
-      );
-
-
-      updateTimer();
-
-
-      cluesContainer.innerHTML =
-        "";
-
-
-      winnerSection.style.display =
-        "none";
-
-
-      result.style.display =
-        "none";
-
-
-      winnerButtons.innerHTML =
-        "";
-
-
-      missionTimerInput.disabled =
-        false;
-
-
-      startTimerButton.disabled =
-        false;
-
-
-      startTimerButton.textContent =
-        "▶️ START TIMER";
-
-
-      endMissionButton.disabled =
-        false;
-
-
-      revealClueButton.disabled =
-        false;
-
-
-      revealClueButton.textContent =
-        "🔎 REVEAL CLUE";
-
-
-      renderScoreboard();
-
-    }
-
-
-    function updateTimer() {
-
-      const minutes =
-        Math.floor(
-          timeRemaining / 60
-        );
-
-
-      const seconds =
-        timeRemaining % 60;
-
-
-      timerElement.textContent =
-        String(
-          minutes
-        ).padStart(
-          2,
-          "0"
-        ) +
+      return (
+        minutes +
         ":" +
-        String(
-          seconds
-        ).padStart(
-          2,
-          "0"
-        );
-
-    }
-
-
-    /*
-      Creates the browser audio system
-      after the teacher clicks START TIMER.
-    */
-
-    function createAudioContext() {
-
-      if (!audioContext) {
-
-        const AudioContext =
-          window.AudioContext ||
-          window.webkitAudioContext;
-
-        if (!AudioContext) {
-
-          return null;
-
-        }
-
-        audioContext =
-          new AudioContext();
-
-      }
-
-
-      if (
-        audioContext.state ===
-        "suspended"
-      ) {
-
-        audioContext.resume();
-
-      }
-
-
-      return audioContext;
-
-    }
-
-
-    /*
-      Tick-Tock sound.
-      Two slightly different clicks
-      make it feel like a real clock.
-    */
-
-    function playTickSound() {
-
-      const ctx =
-        createAudioContext();
-
-
-      if (!ctx) {
-
-        return;
-
-      }
-
-
-      const oscillator =
-        ctx.createOscillator();
-
-
-      const gain =
-        ctx.createGain();
-
-
-      oscillator.type =
-        "square";
-
-
-      oscillator.frequency.value =
-        timeRemaining <= 10
-          ? 850
-          : 620;
-
-
-      gain.gain.setValueAtTime(
-        0.0001,
-        ctx.currentTime
-      );
-
-
-      gain.gain.exponentialRampToValueAtTime(
-        timeRemaining <= 10
-          ? 0.10
-          : 0.055,
-        ctx.currentTime + 0.01
-      );
-
-
-      gain.gain.exponentialRampToValueAtTime(
-        0.0001,
-        ctx.currentTime + 0.08
-      );
-
-
-      oscillator.connect(
-        gain
-      );
-
-
-      gain.connect(
-        ctx.destination
-      );
-
-
-      oscillator.start();
-
-
-      oscillator.stop(
-        ctx.currentTime + 0.09
+        String(secs).padStart(2, "0")
       );
 
     }
 
 
-    function startEmergency() {
+    return String(secs);
 
-      if (emergencyMode) {
+  }
 
-        return;
 
-      }
+  /* =========================
+     RENDER TEAMS
+  ========================= */
 
+  function renderTeams() {
 
-      emergencyMode =
-        true;
+    const scoreboard =
+      $("scoreboard");
 
+    scoreboard.innerHTML = "";
 
-      document.body.classList.add(
-        "emergency"
-      );
 
+    state.teams.forEach(
+      (team, index) => {
 
-      timerElement.classList.add(
-        "emergency-timer"
-      );
+        const element =
+          document.createElement("div");
 
-    }
 
-
-    function stopEmergency() {
-
-      emergencyMode =
-        false;
-
-
-      document.body.classList.remove(
-        "emergency"
-      );
-
-
-      timerElement.classList.remove(
-        "emergency-timer"
-      );
-
-    }
-
-
-    startTimerButton.addEventListener(
-      "click",
-      function() {
-
-        if (
-          timerRunning ||
-          timeRemaining <= 0
-        ) {
-
-          return;
-
-        }
-
-
-        const selectedMinutes =
-          Number(
-            missionTimerInput.value
-          );
-
-
-        if (
-          !Number.isFinite(
-            selectedMinutes
-          ) ||
-          selectedMinutes < 1
-        ) {
-
-          alert(
-            "Please enter at least 1 minute."
-          );
-
-          missionTimerInput.focus();
-
-          return;
-
-        }
-
-
-        /*
-          Convert the teacher's
-          selected minutes into seconds.
-        */
-
-        timeRemaining =
-          Math.floor(
-            selectedMinutes * 60
-          );
-
-
-        updateTimer();
-
-
-        createAudioContext();
-
-
-        timerRunning =
-          true;
-
-
-        missionTimerInput.disabled =
-          true;
-
-
-        startTimerButton.disabled =
-          true;
-
-
-        startTimerButton.textContent =
-          "⏱ TIMER RUNNING";
-
-
-        endMissionButton.disabled =
-          false;
-
-
-        playTickSound();
-
-
-        timerInterval =
-          setInterval(
-            function() {
-
-              timeRemaining--;
-
-
-              updateTimer();
-
-
-              /*
-                Emergency mode begins
-                at exactly 10 seconds.
-              */
-
-              if (
-                timeRemaining <= 10 &&
-                timeRemaining > 0
-              ) {
-
-                startEmergency();
-
-              }
-
-
-              if (
-                timeRemaining > 0
-              ) {
-
-                playTickSound();
-
-              }
-
-
-              if (
-                timeRemaining <= 0
-              ) {
-
-                clearInterval(
-                  timerInterval
-                );
-
-
-                timerRunning =
-                  false;
-
-
-                stopEmergency();
-
-
-                timerElement.textContent =
-                  "TIME'S UP";
-
-
-                timerElement.classList.add(
-                  "finished"
-                );
-
-
-                startTimerButton.disabled =
-                  true;
-
-
-                endMission();
-
-              }
-
-            },
-            1000
-          );
-
-      }
-    );
-
-
-    /*
-      If the teacher changes the timer
-      before starting, update the display.
-    */
-
-    missionTimerInput.addEventListener(
-      "input",
-      function() {
-
-        if (
-          timerRunning ||
-          !currentMission
-        ) {
-
-          return;
-
-        }
-
-
-        const minutes =
-          Number(
-            missionTimerInput.value
-          );
-
-
-        if (
-          Number.isFinite(
-            minutes
-          ) &&
-          minutes >= 1
-        ) {
-
-          timeRemaining =
-            Math.floor(
-              minutes * 60
-            );
-
-
-          updateTimer();
-
-        }
-
-      }
-    );
-
-
-    revealClueButton.addEventListener(
-      "click",
-      function() {
-
-        if (!currentMission) {
-
-          return;
-
-        }
-
-
-        if (
-          revealedClues >=
-          currentMission.clues.length
-        ) {
-
-          revealClueButton.textContent =
-            "NO MORE CLUES";
-
-          return;
-
-        }
-
-
-        const clue =
-          currentMission.clues[
-            revealedClues
-          ];
-
-
-        const clueElement =
-          document.createElement(
-            "div"
-          );
-
-
-        clueElement.className =
-          "clue";
-
-
-        clueElement.textContent =
-          "CLUE " +
+        element.className =
+          "team" +
           (
-            revealedClues + 1
-          ) +
-          ": " +
-          clue;
+            index === state.currentTeam
+              ? " active"
+              : ""
+          );
 
 
-        cluesContainer.appendChild(
-          clueElement
-        );
+        element.innerHTML = `
+
+          <div class="team-name">
+            ${escapeHtml(team.name)}
+          </div>
+
+          <div class="money">
+            ${team.money.toLocaleString()}
+          </div>
+
+          <div class="team-controls">
+
+            <button
+              class="small"
+              data-team="${index}"
+              data-change="500"
+            >
+              +500
+            </button>
+
+            <button
+              class="small"
+              data-team="${index}"
+              data-change="-500"
+            >
+              −500
+            </button>
+
+          </div>
+
+        `;
 
 
-        revealedClues++;
+        scoreboard.appendChild(element);
 
       }
     );
 
+  }
 
-    endMissionButton.addEventListener(
-      "click",
-      function() {
 
-        endMission();
+  /* =========================
+     RENDER CHALLENGES
+  ========================= */
+
+  function renderChallenges() {
+
+    const list =
+      $("challengeList");
+
+    list.innerHTML = "";
+
+
+    if (
+      state.challenges.length === 0
+    ) {
+
+      list.innerHTML =
+        '<div class="empty">No challenges yet.</div>';
+
+      return;
+
+    }
+
+
+    state.challenges.forEach(
+      (challenge, index) => {
+
+        const element =
+          document.createElement("div");
+
+
+        element.className =
+          "challenge-item";
+
+
+        element.innerHTML = `
+
+          <div>
+
+            <strong>
+              ${escapeHtml(challenge.title)}
+            </strong>
+
+            <small>
+              ${escapeHtml(challenge.text)}
+              ·
+              ${challenge.time}s
+            </small>
+
+          </div>
+
+
+          <button
+            class="small danger"
+            data-delete="${index}"
+          >
+            Delete
+          </button>
+
+        `;
+
+
+        list.appendChild(element);
 
       }
     );
 
+  }
 
-    function endMission() {
 
-      if (!currentMission) {
+  /* =========================
+     SHOW CHALLENGE
+  ========================= */
 
-        return;
+  function showChallenge(index) {
 
-      }
+    if (
+      state.challenges.length === 0
+    ) {
 
+      return;
+
+    }
+
+
+    state.currentChallenge =
+      (
+        index +
+        state.challenges.length
+      ) %
+      state.challenges.length;
+
+
+    const challenge =
+      state.challenges[
+        state.currentChallenge
+      ];
+
+
+    stopTimer();
+
+
+    state.time =
+      challenge.time;
+
+
+    $("challengeTitle").textContent =
+      challenge.title;
+
+
+    $("challengeText").textContent =
+      challenge.text;
+
+
+    $("timer").textContent =
+      formatTime(state.time);
+
+
+    $("timer").classList.remove(
+      "done"
+    );
+
+  }
+
+
+  /* =========================
+     RANDOM TEAM
+  ========================= */
+
+  function pickTeam() {
+
+    if (
+      state.teams.length === 0
+    ) {
+
+      return;
+
+    }
+
+
+    let random =
+      Math.floor(
+        Math.random() *
+        state.teams.length
+      );
+
+
+    if (
+      state.teams.length > 1 &&
+      random === state.currentTeam
+    ) {
+
+      random =
+        (
+          random +
+          1 +
+          Math.floor(
+            Math.random() *
+            (state.teams.length - 1)
+          )
+        ) %
+        state.teams.length;
+
+    }
+
+
+    state.currentTeam =
+      random;
+
+
+    $("currentTeam").textContent =
+      state.teams[random].name;
+
+
+    renderTeams();
+
+  }
+
+
+  /* =========================
+     TIMER
+  ========================= */
+
+  function stopTimer() {
+
+    if (state.interval) {
 
       clearInterval(
-        timerInterval
+        state.interval
       );
 
+      state.interval = null;
 
-      timerRunning =
-        false;
-
-
-      stopEmergency();
+    }
 
 
-      startTimerButton.disabled =
-        true;
+    $("timerBtn").textContent =
+      "⏱ Start Timer";
+
+  }
 
 
-      endMissionButton.disabled =
-        true;
+  function startTimer() {
+
+    if (state.interval) {
+
+      return;
+
+    }
 
 
-      revealClueButton.disabled =
-        true;
+    state.interval =
+      setInterval(
+        () => {
+
+          state.time--;
 
 
-      missionTimerInput.disabled =
-        true;
-
-
-      winnerSection.style.display =
-        "block";
-
-
-      winnerButtons.innerHTML =
-        "";
-
-
-      currentMission.teams.forEach(
-        function(team, index) {
-
-          const button =
-            document.createElement(
-              "button"
+          $("timer").textContent =
+            formatTime(
+              Math.max(
+                0,
+                state.time
+              )
             );
 
-
-          button.className =
-            "winner-btn";
-
-
-          button.textContent =
-            "🏆 " +
-            team +
-            " WINS";
-
-
-          button.addEventListener(
-            "click",
-            function() {
-
-              chooseWinner(
-                index
-              );
-
-            }
-          );
-
-
-          winnerButtons.appendChild(
-            button
-          );
-
-        }
-      );
-
-    }
-
-
-    function chooseWinner(index) {
-
-      const team =
-        currentMission.teams[
-          index
-        ];
-
-
-      if (
-        scores[team] === undefined
-      ) {
-
-        scores[team] =
-          0;
-
-      }
-
-
-      scores[team] +=
-        Number(
-          currentMission.reward
-        );
-
-
-      saveScores();
-
-
-      winnerSection.style.display =
-        "none";
-
-
-      result.style.display =
-        "block";
-
-
-      winnerName.textContent =
-        team +
-        " WINS!";
-
-
-      winnerMessage.textContent =
-        "+" +
-        currentMission.reward +
-        " added to " +
-        team +
-        "'s total.";
-
-
-      renderScoreboard();
-
-    }
-
-
-    function renderScoreboard() {
-
-      if (!currentMission) {
-
-        return;
-
-      }
-
-
-      scoreboard.innerHTML =
-        "";
-
-
-      currentMission.teams.forEach(
-        function(team) {
 
           if (
-            scores[team] === undefined
+            state.time <= 0
           ) {
 
-            scores[team] =
-              0;
-
-          }
+            stopTimer();
 
 
-          const card =
-            document.createElement(
-              "div"
+            $("timer").classList.add(
+              "done"
             );
 
 
-          card.className =
-            "team-score";
+            $("timer").textContent =
+              "TIME'S UP!";
 
+          }
 
-          card.innerHTML = `
-            <div class="team-name">
-              ${escapeHtml(team)}
-            </div>
+        },
 
-            <div class="money">
-              ${scores[team]}
-            </div>
-          `;
-
-
-          scoreboard.appendChild(
-            card
-          );
-
-        }
+        1000
       );
 
 
-      saveScores();
+    $("timerBtn").textContent =
+      "⏸ Pause Timer";
+
+  }
+
+
+  /* =========================
+     MONEY
+  ========================= */
+
+  function changeMoney(amount) {
+
+    if (
+      state.currentTeam < 0
+    ) {
+
+      alert(
+        "Pick a team first."
+      );
+
+      return;
 
     }
 
 
-    /*
-      NEXT MISSION
+    state.teams[
+      state.currentTeam
+    ].money =
+      Math.max(
+        0,
+        state.teams[
+          state.currentTeam
+        ].money + amount
+      );
 
-      Instead of requiring exactly
-      current number + 1, find the
-      smallest mission number that
-      is greater than the current one.
 
-      Example:
-      1 → 2 → 3 → 4
+    renderTeams();
 
-      Also works:
-      1 → 3 → 7 → 25
-    */
+  }
 
-    nextMissionButton.addEventListener(
+
+  /* =========================
+     BUTTON EVENTS
+  ========================= */
+
+  $("pickBtn")
+    .addEventListener(
       "click",
-      function() {
-
-        if (!currentMission) {
-
-          return;
-
-        }
+      pickTeam
+    );
 
 
-        clearInterval(
-          timerInterval
-        );
+  $("timerBtn")
+    .addEventListener(
+      "click",
 
+      () => {
 
-        stopEmergency();
+        if (state.interval) {
 
-
-        const currentNumber =
-          Number(
-            currentMission.number
-          );
-
-
-        const possibleNextMissions =
-          missions.filter(
-            function(mission) {
-
-              return (
-                Number(
-                  mission.number
-                ) > currentNumber
-              );
-
-            }
-          );
-
-
-        possibleNextMissions.sort(
-          function(a, b) {
-
-            return (
-              Number(a.number) -
-              Number(b.number)
-            );
-
-          }
-        );
-
-
-        const nextMission =
-          possibleNextMissions[0];
-
-
-        if (nextMission) {
-
-          startMission(
-            nextMission
-          );
+          stopTimer();
 
         } else {
 
-          teacherPanel.style.display =
-            "block";
-
-
-          game.style.display =
-            "none";
-
-
-          currentMission =
-            null;
-
-
-          alert(
-            "There is no next mission yet."
-          );
-
-
-          renderMissionList();
+          startTimer();
 
         }
 
@@ -2253,76 +1186,451 @@ Someone saw him at 8 PM."
     );
 
 
-    backToMissions.addEventListener(
+  $("nextBtn")
+    .addEventListener(
       "click",
-      function() {
 
-        clearInterval(
-          timerInterval
-        );
+      () => {
 
+        if (
+          state.currentChallenge < 0
+        ) {
 
-        stopEmergency();
+          showChallenge(0);
 
+        } else {
 
-        currentMission =
-          null;
+          showChallenge(
+            state.currentChallenge + 1
+          );
 
-
-        teacherPanel.style.display =
-          "block";
-
-
-        game.style.display =
-          "none";
-
-
-        startTimerButton.disabled =
-          false;
-
-
-        startTimerButton.textContent =
-          "▶️ START TIMER";
-
-
-        endMissionButton.disabled =
-          false;
-
-
-        revealClueButton.disabled =
-          false;
-
-
-        missionTimerInput.disabled =
-          false;
-
-
-        renderMissionList();
+        }
 
       }
     );
 
 
-    function escapeHtml(text) {
+  /* MONEY BUTTONS */
 
-      const div =
-        document.createElement(
-          "div"
+  document
+    .querySelectorAll(
+      "[data-money]"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+
+          () => {
+
+            changeMoney(
+              Number(
+                button.dataset.money
+              )
+            );
+
+          }
+        );
+
+      }
+    );
+
+
+  /* TEAM SMALL BUTTONS */
+
+  $("scoreboard")
+    .addEventListener(
+      "click",
+
+      event => {
+
+        const button =
+          event.target.closest(
+            "[data-team]"
+          );
+
+
+        if (!button) {
+
+          return;
+
+        }
+
+
+        const team =
+          Number(
+            button.dataset.team
+          );
+
+
+        const amount =
+          Number(
+            button.dataset.change
+          );
+
+
+        state.teams[team].money =
+          Math.max(
+            0,
+            state.teams[team].money +
+            amount
+          );
+
+
+        renderTeams();
+
+      }
+    );
+
+
+  /* =========================
+     ADD CHALLENGE
+  ========================= */
+
+  $("addChallenge")
+    .addEventListener(
+      "click",
+
+      () => {
+
+        const title =
+          $("newTitle")
+            .value
+            .trim();
+
+
+        const text =
+          $("newText")
+            .value
+            .trim();
+
+
+        const time =
+          Number(
+            $("newTime").value
+          );
+
+
+        if (
+          !title ||
+          !text
+        ) {
+
+          alert(
+            "Add a challenge name and challenge text."
+          );
+
+          return;
+
+        }
+
+
+        state.challenges.push({
+
+          title: title,
+
+          text: text,
+
+          time: time
+
+        });
+
+
+        $("newTitle").value = "";
+
+        $("newText").value = "";
+
+
+        renderChallenges();
+
+
+        if (
+          state.currentChallenge < 0
+        ) {
+
+          showChallenge(0);
+
+        }
+
+      }
+    );
+
+
+  /* =========================
+     DELETE CHALLENGE
+  ========================= */
+
+  $("challengeList")
+    .addEventListener(
+      "click",
+
+      event => {
+
+        const button =
+          event.target.closest(
+            "[data-delete]"
+          );
+
+
+        if (!button) {
+
+          return;
+
+        }
+
+
+        const index =
+          Number(
+            button.dataset.delete
+          );
+
+
+        state.challenges.splice(
+          index,
+          1
         );
 
 
-      div.textContent =
-        text;
+        if (
+          state.currentChallenge >=
+          state.challenges.length
+        ) {
+
+          state.currentChallenge =
+            state.challenges.length - 1;
+
+        }
 
 
-      return div.innerHTML;
-
-    }
+        renderChallenges();
 
 
-    renderMissionList();
+        if (
+          state.currentChallenge >= 0
+        ) {
 
-  </script>
+          showChallenge(
+            state.currentChallenge
+          );
+
+        }
+
+      }
+    );
+
+
+  /* =========================
+     UPDATE TEAM NAMES
+  ========================= */
+
+  $("updateTeams")
+    .addEventListener(
+      "click",
+
+      () => {
+
+        const ids = [
+          "teamA",
+          "teamB",
+          "teamC",
+          "teamD"
+        ];
+
+
+        ids.forEach(
+          (id, index) => {
+
+            const value =
+              $(id)
+                .value
+                .trim();
+
+
+            if (value) {
+
+              state.teams[index].name =
+                value;
+
+            }
+
+          }
+        );
+
+
+        if (
+          state.currentTeam >= 0
+        ) {
+
+          $("currentTeam")
+            .textContent =
+            state.teams[
+              state.currentTeam
+            ].name;
+
+        }
+
+
+        renderTeams();
+
+      }
+    );
+
+
+  /* =========================
+     FINISH GAME
+  ========================= */
+
+  $("finishBtn")
+    .addEventListener(
+      "click",
+
+      () => {
+
+        stopTimer();
+
+
+        const scores =
+          state.teams
+            .slice()
+            .sort(
+              (a, b) =>
+                b.money - a.money
+            );
+
+
+        $("finalScores").innerHTML =
+          scores
+            .map(
+              (team, index) => `
+
+                <div>
+
+                  <span>
+                    ${index + 1}.
+                    ${escapeHtml(team.name)}
+                  </span>
+
+                  <span>
+                    ${team.money.toLocaleString()}
+                  </span>
+
+                </div>
+
+              `
+            )
+            .join("");
+
+
+        $("finishOverlay")
+          .classList
+          .add("show");
+
+      }
+    );
+
+
+  $("closeFinish")
+    .addEventListener(
+      "click",
+
+      () => {
+
+        $("finishOverlay")
+          .classList
+          .remove("show");
+
+      }
+    );
+
+
+  /* =========================
+     RESET
+  ========================= */
+
+  $("resetBtn")
+    .addEventListener(
+      "click",
+
+      () => {
+
+        const answer =
+          confirm(
+            "Reset the game and all scores?"
+          );
+
+
+        if (!answer) {
+
+          return;
+
+        }
+
+
+        stopTimer();
+
+
+        state.teams.forEach(
+          team => {
+
+            team.money = 5000;
+
+          }
+        );
+
+
+        state.currentTeam = -1;
+
+
+        state.currentChallenge = -1;
+
+
+        $("currentTeam")
+          .textContent =
+          "No team selected";
+
+
+        $("challengeTitle")
+          .textContent =
+          "Choose a challenge";
+
+
+        $("challengeText")
+          .textContent =
+          "Add your own challenge, then pick a team.";
+
+
+        state.time = 30;
+
+
+        $("timer")
+          .textContent = "30";
+
+
+        $("timer")
+          .classList
+          .remove("done");
+
+
+        renderTeams();
+
+      }
+    );
+
+
+  /* =========================
+     START
+  ========================= */
+
+  renderTeams();
+
+  renderChallenges();
+
+  showChallenge(0);
+
+})();
+
+</script>
 
 </body>
 </html>
